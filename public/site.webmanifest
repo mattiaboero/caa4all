@@ -1,0 +1,22 @@
+{
+  "name": "CAA4all — Mappe museali accessibili",
+  "short_name": "CAA4all",
+  "description": "Webapp gratuita per creare mappe museali accessibili con simboli CAA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F3F0",
+  "theme_color": "#2C2926",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
