@@ -21,7 +21,7 @@ const sv = (bg, inner) =>
   `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect width="80" height="80" rx="12" fill="${bg}"/>${inner}</svg>`)}`;
 
 const LIBRARY = [
-  { category: "Orientamento", color: "#0072B2", symbols: [
+  { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
     { id: "ingresso", name: "Ingresso", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M40 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="26" y1="40" x2="48" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
     { id: "uscita", name: "Uscita", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M50 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="36" y1="40" x2="58" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
     { id: "inizio", name: "Inizio percorso", src: sv("#0072B2",'<circle cx="40" cy="40" r="16" fill="none" stroke="#fff" stroke-width="3"/><polygon points="36,30 52,40 36,50" fill="#fff"/>') },
@@ -30,7 +30,7 @@ const LIBRARY = [
     { id: "ascensore", name: "Ascensore", src: sv("#0072B2",'<rect x="22" y="16" width="36" height="48" rx="4" fill="none" stroke="#fff" stroke-width="3"/><line x1="40" y1="20" x2="40" y2="60" stroke="#fff" stroke-width="2"/><path d="M30 34l-4-6 4-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 40l4 6-4 6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>') },
     { id: "tu_sei_qui", name: "Tu sei qui", src: sv("#0072B2",'<circle cx="40" cy="36" r="10" fill="#fff" opacity="0.3"/><circle cx="40" cy="36" r="5" fill="#fff"/><path d="M40 48v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
   ]},
-  { category: "Servizi", color: "#E69F00", symbols: [
+  { category: "Servizi", color: "#E69F00", shape: "square", symbols: [
     { id: "biglietteria", name: "Biglietteria", src: sv("#E69F00",'<rect x="18" y="24" width="44" height="28" rx="5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40" cy="38" r="8" fill="none" stroke="#fff" stroke-width="2.5"/><text x="40" y="43" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="sans-serif">€</text>') },
     { id: "bagno", name: "Bagno", src: sv("#E69F00",'<rect x="18" y="38" width="18" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M44 28c0-4 4-4 4-10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M50 28c0-4 4-4 4-10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><rect x="38" y="30" width="22" height="18" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M22 54v4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M32 54v4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
     { id: "bar", name: "Bar", src: sv("#E69F00",'<rect x="18" y="32" width="32" height="24" rx="4" fill="none" stroke="#fff" stroke-width="3"/><path d="M50 38h6a4 4 0 010 8h-6" fill="none" stroke="#fff" stroke-width="3"/><path d="M28 28c0-6 4-6 4-12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M38 28c0-6 4-6 4-12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
@@ -41,7 +41,7 @@ const LIBRARY = [
     { id: "infermeria", name: "Infermeria", src: sv("#E69F00",'<rect x="32" y="22" width="16" height="36" rx="2" fill="#fff"/><rect x="22" y="32" width="36" height="16" rx="2" fill="#fff"/>') },
     { id: "panchina", name: "Area sosta", src: sv("#E69F00",'<rect x="20" y="34" width="40" height="6" rx="3" fill="#fff"/><rect x="20" y="40" width="4" height="18" rx="2" fill="#fff"/><rect x="56" y="40" width="4" height="18" rx="2" fill="#fff"/><rect x="18" y="24" width="4" height="14" rx="2" fill="#fff"/><rect x="58" y="24" width="4" height="14" rx="2" fill="#fff"/>') },
   ]},
-  { category: "Contenuti", color: "#56B4E9", symbols: [
+  { category: "Contenuti", color: "#56B4E9", shape: "triangle", symbols: [
     { id: "reperto", name: "Oggetto esposto", src: sv("#56B4E9",'<rect x="20" y="26" width="40" height="32" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M28 26V18h24v8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/><circle cx="40" cy="42" r="7" fill="#fff" opacity="0.5"/>') },
     { id: "audio_racconto", name: "Audio racconto", src: sv("#56B4E9",'<circle cx="36" cy="28" r="8" fill="none" stroke="#fff" stroke-width="3"/><path d="M36 36v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="28" y="48" width="16" height="8" rx="3" fill="#fff"/><path d="M50 22a14 14 0 010 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M56 18a20 20 0 010 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
     { id: "video", name: "Video proiezione", src: sv("#56B4E9",'<rect x="16" y="22" width="48" height="30" rx="4" fill="none" stroke="#fff" stroke-width="3"/><polygon points="36,30 36,48 50,39" fill="#fff"/><line x1="30" y1="58" x2="50" y2="58" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
@@ -53,7 +53,7 @@ const LIBRARY = [
     { id: "foto_si", name: "Foto consentite", src: sv("#56B4E9",'<rect x="20" y="28" width="32" height="24" rx="4" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="36" cy="40" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="58" cy="56" r="10" fill="#009E73"/><path d="M54 56l3 3 6-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>') },
     { id: "foto_no", name: "Foto vietate", src: sv("#56B4E9",'<rect x="20" y="28" width="32" height="24" rx="4" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="36" cy="40" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="58" cy="56" r="10" fill="#CC3D3D"/><path d="M54 52l8 8m0-8l-8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
   ]},
-  { category: "Accessibilità", color: "#009E73", symbols: [
+  { category: "Accessibilità", color: "#009E73", shape: "diamond", symbols: [
     { id: "acc_motoria", name: "Accessibilità motoria", src: sv("#009E73",'<circle cx="42" cy="22" r="5" fill="#fff"/><path d="M36 56l6-16h10l4 16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="56" r="8" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M42 30v10h10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>') },
     { id: "tattile", name: "Percorso tattile", src: sv("#009E73",'<circle cx="28" cy="26" r="4" fill="#fff"/><circle cx="40" cy="26" r="4" fill="#fff"/><circle cx="52" cy="26" r="4" fill="#fff"/><circle cx="28" cy="40" r="4" fill="#fff"/><circle cx="40" cy="40" r="4" fill="#fff"/><circle cx="52" cy="40" r="4" fill="#fff"/><circle cx="28" cy="54" r="4" fill="#fff"/><circle cx="40" cy="54" r="4" fill="#fff"/><circle cx="52" cy="54" r="4" fill="#fff"/>') },
     { id: "mappa_tattile", name: "Mappa tattile", src: sv("#009E73",'<rect x="18" y="22" width="44" height="36" rx="4" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M26 40h28M40 28v24" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="34" cy="34" r="3" fill="#fff"/><circle cx="48" cy="46" r="3" fill="#fff"/>') },
@@ -64,7 +64,7 @@ const LIBRARY = [
     { id: "cane_guida", name: "Cane guida", src: sv("#009E73",'<path d="M22 52l6-14 10 2 8-8 8 4v16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="52" cy="30" r="3" fill="#fff"/><circle cx="60" cy="58" r="8" fill="#009E73" stroke="#fff" stroke-width="2"/><path d="M56 58l3 3 5-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>') },
     { id: "bagno_acc", name: "Bagno accessibile", src: sv("#009E73",'<circle cx="40" cy="22" r="5" fill="#fff"/><path d="M34 56l6-16h10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="30" cy="56" r="7" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M40 30v10h10l4 12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>') },
   ]},
-  { category: "Sicurezza", color: "#D55E00", symbols: [
+  { category: "Sicurezza", color: "#D55E00", shape: "hexagon", symbols: [
     { id: "emergenza", name: "Uscita emergenza", src: sv("#D55E00",'<rect x="16" y="20" width="48" height="40" rx="4" fill="none" stroke="#fff" stroke-width="3"/><path d="M36 30v10h-6l10 12 10-12h-6V30z" fill="#fff"/>') },
     { id: "punto_raccolta", name: "Punto di raccolta", src: sv("#D55E00",'<circle cx="30" cy="30" r="4" fill="#fff"/><circle cx="40" cy="26" r="4" fill="#fff"/><circle cx="50" cy="30" r="4" fill="#fff"/><path d="M24 56h32" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M30 36v20m10-24v24m10-22v22" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
     { id: "estintore", name: "Estintore", src: sv("#D55E00",'<rect x="30" y="24" width="20" height="34" rx="6" fill="none" stroke="#fff" stroke-width="3"/><path d="M38 24v-6h8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="40" y1="36" x2="40" y2="48" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>') },
@@ -77,6 +77,8 @@ const PROJECT_TEXT = [
   { type: "title", text: "CAA4all" },
   { type: "paragraph", text: "Nei musei che provano a rendere i percorsi accessibili alle persone con disabilità comunicative, manca quasi sempre lo strumento per farlo senza budget e senza grafico. Ho costruito CAA4all per questo: è una webapp gratuita dove carichi la planimetria del tuo museo e ci posizioni sopra i simboli CAA che ti servono. Scarichi il risultato come immagine e da lì decidi tu cosa farne: stamparlo, prestarlo ai visitatori, metterlo a disposizione online." },
   { type: "paragraph", text: "I simboli li ho disegnati io, Mattia Boero. Ogni simbolo rappresenta quello che il visitatore fa in quel punto, non quello che siamo abituati a vedere sui cartelli. Il bagno è le mani sotto l'acqua e il water, non la sagoma uomo/donna. La biglietteria è una mano che porge un biglietto attraverso una finestrella. Il percorso tattile sono piedi che seguono una striscia di punti in rilievo. Nella CAA conta l'azione, non il pittogramma convenzionale." },
+  { type: "heading", text: "Colori e daltonismo" },
+  { type: "paragraph", text: "I simboli e l'interfaccia dell'app usano la palette Okabe-Ito, una combinazione di colori progettata per essere distinguibile anche dalle persone daltoniche (protanopia, deuteranopia, tritanopia). Ogni categoria di simboli ha un colore diverso e anche una forma diversa nell'indicatore di categoria, così chi ha difficoltà a distinguere i colori ha comunque un riferimento visivo alternativo." },
   { type: "heading", text: "Uso, riuso, ridistribuzione" },
   { type: "paragraph", text: "Simboli e mappe prodotte con CAA4all si possono usare, modificare e ridistribuire gratis. Non ci sono condizioni d'uso: valgono per qualsiasi scopo, compreso quello commerciale. Se volete citarmi come autore mi fa piacere, ma non è un obbligo. Ho scelto di farlo così perché i simboli per l'accessibilità funzionano solo se girano, e non ha senso metterci un prezzo o un vincolo sopra." },
   { type: "heading", text: "File sorgente" },
@@ -166,6 +168,28 @@ function useBreakpoint() {
     return () => window.removeEventListener("resize", check);
   }, []);
   return bp;
+}
+
+/* === CATEGORY SHAPES (colorblind-safe visual cue) === */
+function CategoryShape({ shape, color, size = 12 }) {
+  const s = size;
+  const half = s / 2;
+  const svgStyle = { width: s, height: s, flexShrink: 0, display: "block" };
+  switch (shape) {
+    case "circle":
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><circle cx={half} cy={half} r={half} fill={color} /></svg>;
+    case "square":
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><rect width={s} height={s} rx={1.5} fill={color} /></svg>;
+    case "triangle":
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${half},0 ${s},${s} 0,${s}`} fill={color} /></svg>;
+    case "diamond":
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${half},0 ${s},${half} ${half},${s} 0,${half}`} fill={color} /></svg>;
+    case "hexagon":
+      const q = s * 0.25;
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${q},0 ${s-q},0 ${s},${half} ${s-q},${s} ${q},${s} 0,${half}`} fill={color} /></svg>;
+    default:
+      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><rect width={s} height={s} rx={2} fill={color} /></svg>;
+  }
 }
 
 /* === MODAL === */
@@ -352,7 +376,7 @@ export default function CAAMapBuilder() {
         {filtered.map(cat => (
           <div key={cat.category}>
             <button onClick={() => setOpenCats(p => ({ ...p, [cat.category]: !p[cat.category] }))} style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: C.text, textAlign: "left" }}>
-              <span style={{ width: 10, height: 10, borderRadius: 3, background: cat.color, flexShrink: 0 }} />
+              <CategoryShape shape={cat.shape} color={cat.color} size={12} />
               {cat.category}
               <span style={{ marginLeft: "auto", fontSize: 10, color: C.textLight }}>{openCats[cat.category] ? "▾" : "▸"}</span>
             </button>
