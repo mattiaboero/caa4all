@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Download, MousePointer2, ZoomIn, ZoomOut, Upload, X, RotateCcw, Image, HelpCircle, Search, ChevronUp, ChevronDown, Layers, Shield, Cookie, Info, FileDown } from "lucide-react";
+import { Download, MousePointer2, ZoomIn, ZoomOut, Upload, X, RotateCcw, Image, HelpCircle, Search, ChevronUp, ChevronDown, Layers, Shield, Cookie, Info, FileDown, Undo2, Type, Globe } from "lucide-react";
 
 /* === PALETTE — Okabe-Ito colorblind-safe === */
 const C = {
@@ -15,6 +15,261 @@ const C = {
 
 const MAX_FILE = 2 * 1024 * 1024;
 const DEFAULT_SIZE = 64;
+const MAX_UNDO = 50;
+
+/* === i18n — MULTILINGUAL === */
+const LANGS = {
+  it: { code: "it", label: "Italiano", flag: "IT" },
+  en: { code: "en", label: "English", flag: "EN" },
+  fr: { code: "fr", label: "Français", flag: "FR" },
+  es: { code: "es", label: "Español", flag: "ES" },
+  de: { code: "de", label: "Deutsch", flag: "DE" },
+};
+
+const T = {
+  it: {
+    appName: "CAA4all",
+    appSub: "Mappe museali accessibili con simboli CAA",
+    project: "Il progetto",
+    guide: "Guida",
+    reset: "Reset",
+    exportPng: "Esporta PNG",
+    exporting: "Esporto...",
+    undo: "Annulla",
+    searchSymbol: "Cerca simbolo...",
+    size: "Dimensione",
+    libraryTitle: "Libreria simboli",
+    uploadMap: "Carica mappa",
+    uploadMapShort: "Mappa",
+    fit: "Adatta",
+    clickToPlace: "Clicca sulla mappa",
+    loadMapTitle: "Carica la mappa del museo",
+    loadMapSub: "JPEG o PNG · Max 2 MB",
+    howTitle: "Come funziona",
+    how1: "1. Carica la mappa del museo (JPEG/PNG, max 2 MB).",
+    how2: "2. Scegli un simbolo dalla libreria.",
+    how3: "3. Tocca/clicca sulla mappa per posizionarlo. Trascinalo per spostarlo.",
+    how4: "4. Esporta la mappa come PNG, pronta per la stampa.",
+    howClose: "Ho capito, chiudi",
+    errFileSize: "Il file supera 2 MB.",
+    errFileType: "Formato non supportato. Usa JPEG o PNG.",
+    errFileBad: "Il file non è un'immagine JPEG o PNG valida.",
+    errFileDimensions: "Immagine troppo grande. Massimo 10000×10000 pixel.",
+    errFileCorrupt: "Impossibile caricare l'immagine. Il file potrebbe essere danneggiato.",
+    errFileRead: "Errore nella lettura del file.",
+    errMaxSymbols: "Numero massimo di simboli raggiunto (200).",
+    errCanvasTooBig: "L'immagine è troppo grande per l'esportazione. Usa una mappa con risoluzione inferiore.",
+    errCanvasUnsupported: "Il browser non supporta l'esportazione su canvas.",
+    errExport: "Errore durante l'esportazione. Riprova con un'immagine più piccola.",
+    privacy: "Privacy",
+    cookie: "Cookie",
+    cookieBanner: "Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento dell'applicazione. Non vengono utilizzati cookie di profilazione o di terze parti a scopo pubblicitario. Continuando la navigazione accetti l'utilizzo dei cookie tecnici.",
+    cookieOk: "Ho capito",
+    symbolsBy: "Simboli di Mattia Boero",
+    addLabel: "Aggiungi etichetta...",
+    labelPlaceholder: "Etichetta...",
+    nothingToUndo: "Nulla da annullare.",
+    catOrientamento: "Orientamento",
+    catServizi: "Servizi",
+    catContenuti: "Contenuti",
+    catAccessibilita: "Accessibilità",
+    catSicurezza: "Sicurezza",
+  },
+  en: {
+    appName: "CAA4all",
+    appSub: "Accessible museum maps with AAC symbols",
+    project: "About",
+    guide: "Guide",
+    reset: "Reset",
+    exportPng: "Export PNG",
+    exporting: "Exporting...",
+    undo: "Undo",
+    searchSymbol: "Search symbol...",
+    size: "Size",
+    libraryTitle: "Symbol library",
+    uploadMap: "Upload map",
+    uploadMapShort: "Map",
+    fit: "Fit",
+    clickToPlace: "Click on the map",
+    loadMapTitle: "Upload your museum map",
+    loadMapSub: "JPEG or PNG · Max 2 MB",
+    howTitle: "How it works",
+    how1: "1. Upload your museum map (JPEG/PNG, max 2 MB).",
+    how2: "2. Choose a symbol from the library.",
+    how3: "3. Tap/click the map to place it. Drag to move.",
+    how4: "4. Export the map as PNG, ready to print.",
+    howClose: "Got it, close",
+    errFileSize: "File exceeds 2 MB.",
+    errFileType: "Unsupported format. Use JPEG or PNG.",
+    errFileBad: "Not a valid JPEG or PNG image.",
+    errFileDimensions: "Image too large. Maximum 10000×10000 pixels.",
+    errFileCorrupt: "Cannot load image. The file may be corrupted.",
+    errFileRead: "Error reading file.",
+    errMaxSymbols: "Maximum number of symbols reached (200).",
+    errCanvasTooBig: "Image too large to export. Use a lower resolution map.",
+    errCanvasUnsupported: "Your browser does not support canvas export.",
+    errExport: "Export error. Try a smaller image.",
+    privacy: "Privacy",
+    cookie: "Cookie",
+    cookieBanner: "This site uses only technical cookies necessary for operation. No profiling or third-party advertising cookies are used. By continuing to browse, you accept the use of technical cookies.",
+    cookieOk: "Got it",
+    symbolsBy: "Symbols by Mattia Boero",
+    addLabel: "Add label...",
+    labelPlaceholder: "Label...",
+    nothingToUndo: "Nothing to undo.",
+    catOrientamento: "Wayfinding",
+    catServizi: "Services",
+    catContenuti: "Content",
+    catAccessibilita: "Accessibility",
+    catSicurezza: "Safety",
+  },
+  fr: {
+    appName: "CAA4all",
+    appSub: "Plans de musée accessibles avec symboles CAA",
+    project: "Le projet",
+    guide: "Guide",
+    reset: "Réinitialiser",
+    exportPng: "Exporter PNG",
+    exporting: "Export...",
+    undo: "Annuler",
+    searchSymbol: "Chercher un symbole...",
+    size: "Taille",
+    libraryTitle: "Bibliothèque de symboles",
+    uploadMap: "Charger le plan",
+    uploadMapShort: "Plan",
+    fit: "Adapter",
+    clickToPlace: "Cliquez sur le plan",
+    loadMapTitle: "Chargez le plan du musée",
+    loadMapSub: "JPEG ou PNG · Max 2 Mo",
+    howTitle: "Comment ça marche",
+    how1: "1. Chargez le plan du musée (JPEG/PNG, max 2 Mo).",
+    how2: "2. Choisissez un symbole dans la bibliothèque.",
+    how3: "3. Cliquez sur le plan pour le placer. Faites-le glisser pour le déplacer.",
+    how4: "4. Exportez le plan en PNG, prêt à imprimer.",
+    howClose: "Compris, fermer",
+    errFileSize: "Le fichier dépasse 2 Mo.",
+    errFileType: "Format non supporté. Utilisez JPEG ou PNG.",
+    errFileBad: "Ce n'est pas une image JPEG ou PNG valide.",
+    errFileDimensions: "Image trop grande. Maximum 10000×10000 pixels.",
+    errFileCorrupt: "Impossible de charger l'image. Le fichier est peut-être corrompu.",
+    errFileRead: "Erreur de lecture du fichier.",
+    errMaxSymbols: "Nombre maximum de symboles atteint (200).",
+    errCanvasTooBig: "Image trop grande pour l'export. Utilisez un plan à résolution inférieure.",
+    errCanvasUnsupported: "Votre navigateur ne supporte pas l'export canvas.",
+    errExport: "Erreur lors de l'export. Essayez avec une image plus petite.",
+    privacy: "Confidentialité",
+    cookie: "Cookies",
+    cookieBanner: "Ce site utilise uniquement des cookies techniques nécessaires à son fonctionnement. Aucun cookie de profilage ou publicitaire n'est utilisé. En poursuivant la navigation, vous acceptez l'utilisation des cookies techniques.",
+    cookieOk: "Compris",
+    symbolsBy: "Symboles par Mattia Boero",
+    addLabel: "Ajouter une étiquette...",
+    labelPlaceholder: "Étiquette...",
+    nothingToUndo: "Rien à annuler.",
+    catOrientamento: "Orientation",
+    catServizi: "Services",
+    catContenuti: "Contenus",
+    catAccessibilita: "Accessibilité",
+    catSicurezza: "Sécurité",
+  },
+  es: {
+    appName: "CAA4all",
+    appSub: "Mapas de museo accesibles con símbolos CAA",
+    project: "El proyecto",
+    guide: "Guía",
+    reset: "Reiniciar",
+    exportPng: "Exportar PNG",
+    exporting: "Exportando...",
+    undo: "Deshacer",
+    searchSymbol: "Buscar símbolo...",
+    size: "Tamaño",
+    libraryTitle: "Biblioteca de símbolos",
+    uploadMap: "Cargar mapa",
+    uploadMapShort: "Mapa",
+    fit: "Ajustar",
+    clickToPlace: "Haz clic en el mapa",
+    loadMapTitle: "Carga el mapa del museo",
+    loadMapSub: "JPEG o PNG · Máx. 2 MB",
+    howTitle: "Cómo funciona",
+    how1: "1. Carga el mapa del museo (JPEG/PNG, máx. 2 MB).",
+    how2: "2. Elige un símbolo de la biblioteca.",
+    how3: "3. Toca/haz clic en el mapa para colocarlo. Arrástralo para moverlo.",
+    how4: "4. Exporta el mapa como PNG, listo para imprimir.",
+    howClose: "Entendido, cerrar",
+    errFileSize: "El archivo supera 2 MB.",
+    errFileType: "Formato no compatible. Usa JPEG o PNG.",
+    errFileBad: "No es una imagen JPEG o PNG válida.",
+    errFileDimensions: "Imagen demasiado grande. Máximo 10000×10000 píxeles.",
+    errFileCorrupt: "No se puede cargar la imagen. El archivo puede estar dañado.",
+    errFileRead: "Error al leer el archivo.",
+    errMaxSymbols: "Número máximo de símbolos alcanzado (200).",
+    errCanvasTooBig: "Imagen demasiado grande para exportar. Usa un mapa de menor resolución.",
+    errCanvasUnsupported: "Tu navegador no soporta la exportación canvas.",
+    errExport: "Error al exportar. Intenta con una imagen más pequeña.",
+    privacy: "Privacidad",
+    cookie: "Cookies",
+    cookieBanner: "Este sitio utiliza exclusivamente cookies técnicas necesarias para el funcionamiento de la aplicación. No se utilizan cookies de perfilado ni de terceros con fines publicitarios. Al continuar navegando, aceptas el uso de cookies técnicas.",
+    cookieOk: "Entendido",
+    symbolsBy: "Símbolos por Mattia Boero",
+    addLabel: "Añadir etiqueta...",
+    labelPlaceholder: "Etiqueta...",
+    nothingToUndo: "Nada que deshacer.",
+    catOrientamento: "Orientación",
+    catServizi: "Servicios",
+    catContenuti: "Contenidos",
+    catAccessibilita: "Accesibilidad",
+    catSicurezza: "Seguridad",
+  },
+  de: {
+    appName: "CAA4all",
+    appSub: "Barrierefreie Museumskarten mit UK-Symbolen",
+    project: "Das Projekt",
+    guide: "Anleitung",
+    reset: "Zurücksetzen",
+    exportPng: "PNG exportieren",
+    exporting: "Exportiere...",
+    undo: "Rückgängig",
+    searchSymbol: "Symbol suchen...",
+    size: "Größe",
+    libraryTitle: "Symbolbibliothek",
+    uploadMap: "Karte hochladen",
+    uploadMapShort: "Karte",
+    fit: "Anpassen",
+    clickToPlace: "Auf die Karte klicken",
+    loadMapTitle: "Museumskarte hochladen",
+    loadMapSub: "JPEG oder PNG · Max. 2 MB",
+    howTitle: "So funktioniert's",
+    how1: "1. Museumskarte hochladen (JPEG/PNG, max. 2 MB).",
+    how2: "2. Symbol aus der Bibliothek wählen.",
+    how3: "3. Auf die Karte tippen/klicken zum Platzieren. Ziehen zum Verschieben.",
+    how4: "4. Karte als PNG exportieren, druckfertig.",
+    howClose: "Verstanden, schließen",
+    errFileSize: "Die Datei überschreitet 2 MB.",
+    errFileType: "Format nicht unterstützt. JPEG oder PNG verwenden.",
+    errFileBad: "Keine gültige JPEG- oder PNG-Datei.",
+    errFileDimensions: "Bild zu groß. Maximal 10000×10000 Pixel.",
+    errFileCorrupt: "Bild kann nicht geladen werden. Die Datei ist möglicherweise beschädigt.",
+    errFileRead: "Fehler beim Lesen der Datei.",
+    errMaxSymbols: "Maximale Anzahl an Symbolen erreicht (200).",
+    errCanvasTooBig: "Bild zu groß für den Export. Verwenden Sie eine Karte mit niedrigerer Auflösung.",
+    errCanvasUnsupported: "Ihr Browser unterstützt keinen Canvas-Export.",
+    errExport: "Exportfehler. Versuchen Sie es mit einem kleineren Bild.",
+    privacy: "Datenschutz",
+    cookie: "Cookies",
+    cookieBanner: "Diese Website verwendet ausschließlich technische Cookies, die für den Betrieb der Anwendung erforderlich sind. Es werden keine Profiling- oder Werbe-Cookies von Drittanbietern verwendet. Durch die weitere Nutzung akzeptieren Sie die Verwendung technischer Cookies.",
+    cookieOk: "Verstanden",
+    symbolsBy: "Symbole von Mattia Boero",
+    addLabel: "Beschriftung...",
+    labelPlaceholder: "Beschriftung...",
+    nothingToUndo: "Nichts rückgängig zu machen.",
+    catOrientamento: "Orientierung",
+    catServizi: "Einrichtungen",
+    catContenuti: "Inhalte",
+    catAccessibilita: "Barrierefreiheit",
+    catSicurezza: "Sicherheit",
+  },
+};
+
+const CAT_KEYS = { "Orientamento": "catOrientamento", "Servizi": "catServizi", "Contenuti": "catContenuti", "Accessibilità": "catAccessibilita", "Sicurezza": "catSicurezza" };
 
 /* === SYMBOL LIBRARY === */
 const sv = (bg, inner) =>
@@ -72,13 +327,19 @@ const LIBRARY = [
   ]},
 ];
 
-/* === PROJECT TEXT === */
+/* === PROJECT TEXT (kept in Italian, shown via modal) === */
 const PROJECT_TEXT = [
   { type: "title", text: "CAA4all" },
   { type: "paragraph", text: "Nei musei che provano a rendere i percorsi accessibili alle persone con disabilità comunicative, manca quasi sempre lo strumento per farlo senza budget e senza grafico. Ho costruito CAA4all per questo: è una webapp gratuita dove carichi la planimetria del tuo museo e ci posizioni sopra i simboli CAA che ti servono. Scarichi il risultato come immagine e da lì decidi tu cosa farne: stamparlo, prestarlo ai visitatori, metterlo a disposizione online." },
   { type: "paragraph", text: "I simboli li ho disegnati io, Mattia Boero. Ogni simbolo rappresenta quello che il visitatore fa in quel punto, non quello che siamo abituati a vedere sui cartelli. Il bagno è le mani sotto l'acqua e il water, non la sagoma uomo/donna. La biglietteria è una mano che porge un biglietto attraverso una finestrella. Il percorso tattile sono piedi che seguono una striscia di punti in rilievo. Nella CAA conta l'azione, non il pittogramma convenzionale." },
   { type: "heading", text: "Colori e daltonismo" },
   { type: "paragraph", text: "I simboli e l'interfaccia dell'app usano la palette Okabe-Ito, una combinazione di colori progettata per essere distinguibile anche dalle persone daltoniche (protanopia, deuteranopia, tritanopia). Ogni categoria di simboli ha un colore diverso e anche una forma diversa nell'indicatore di categoria, così chi ha difficoltà a distinguere i colori ha comunque un riferimento visivo alternativo." },
+  { type: "heading", text: "Accessibilità dell'interfaccia" },
+  { type: "paragraph", text: "Un'app che parla di accessibilità deve essere accessibile lei stessa. CAA4all si può usare interamente da tastiera: Tab per spostarsi tra gli elementi, Invio per attivare, Canc per rimuovere un simbolo dalla mappa, Ctrl+Z per annullare l'ultima azione. Ogni pulsante e ogni elemento interattivo è riconoscibile dagli screen reader. I messaggi di errore vengono annunciati automaticamente. Chi usa tecnologie assistive può navigare l'intera app senza il mouse." },
+  { type: "heading", text: "Etichette sui simboli" },
+  { type: "paragraph", text: "Ogni simbolo posizionato sulla mappa può avere un'etichetta di testo sotto, ad esempio \"Bagno piano 1\" o \"Ingresso gruppi\". L'etichetta compare sia nell'editor che nella mappa esportata come PNG, così chi legge la mappa stampata ha un doppio riferimento: il simbolo visivo e il testo scritto." },
+  { type: "heading", text: "Lingue" },
+  { type: "paragraph", text: "L'interfaccia dell'app è disponibile in italiano, inglese, francese, spagnolo e tedesco. I simboli sono visivi e non hanno bisogno di traduzione: funzionano in qualsiasi lingua. Il selettore si trova nell'header dell'app." },
   { type: "heading", text: "Uso, riuso, ridistribuzione" },
   { type: "paragraph", text: "Simboli e mappe prodotte con CAA4all si possono usare, modificare e ridistribuire gratis. Non ci sono condizioni d'uso: valgono per qualsiasi scopo, compreso quello commerciale. Se volete citarmi come autore mi fa piacere, ma non è un obbligo. Ho scelto di farlo così perché i simboli per l'accessibilità funzionano solo se girano, e non ha senso metterci un prezzo o un vincolo sopra." },
   { type: "heading", text: "File sorgente" },
@@ -88,76 +349,10 @@ const PROJECT_TEXT = [
   { type: "paragraph", text: "Se lavori nell'accessibilità museale e hai suggerimenti, correzioni o richieste di nuovi simboli, scrivimi a [email]." },
 ];
 
-/* === GDPR TEXTS === */
-const PRIVACY_POLICY = `Informativa sulla privacy ai sensi del Regolamento (UE) 2016/679 (GDPR)
+/* === GDPR TEXTS (kept in Italian) === */
+const PRIVACY_POLICY = `Informativa sulla privacy ai sensi del Regolamento (UE) 2016/679 (GDPR)\n\nUltimo aggiornamento: marzo 2026\n\n1. Titolare del trattamento\nIl titolare del trattamento è [Nome del titolare / Ragione sociale], con sede in [indirizzo], contattabile all'indirizzo email [email].\n\n2. Dati raccolti\nQuesta applicazione web non raccoglie dati personali. Non è prevista alcuna forma di registrazione, login o autenticazione. Non vengono richiesti nome, email, indirizzo o altri dati identificativi.\n\n3. Trattamento delle immagini\nLe immagini caricate dall'utente (mappe museali) vengono elaborate interamente nel browser dell'utente, sul suo dispositivo. Nessuna immagine viene trasmessa a server esterni, archiviata o conservata dall'applicazione. Al termine della sessione di navigazione o alla chiusura della pagina, tutte le immagini vengono eliminate automaticamente dalla memoria del browser.\n\n4. Cookie\nQuesta applicazione non utilizza cookie di profilazione né cookie di terze parti a scopo pubblicitario. Per maggiori dettagli, consulta la Cookie Policy.\n\n5. Dati di navigazione\nIl server che ospita l'applicazione potrebbe raccogliere automaticamente alcuni dati tecnici (indirizzo IP, tipo di browser, sistema operativo, data e ora di accesso) nei log del server. Questi dati vengono trattati esclusivamente per garantire il funzionamento e la sicurezza del servizio, e non vengono utilizzati per identificare l'utente. La base giuridica è il legittimo interesse del titolare (art. 6, par. 1, lett. f del GDPR).\n\n6. Trasferimento dei dati\nNon viene effettuato alcun trasferimento di dati personali verso Paesi terzi o organizzazioni internazionali.\n\n7. Periodo di conservazione\nI dati tecnici di navigazione eventualmente registrati nei log del server vengono conservati per un massimo di 30 giorni, dopodiché vengono cancellati automaticamente.\n\n8. Diritti dell'utente\nAi sensi degli articoli 15-22 del GDPR, l'utente ha diritto di accedere ai propri dati, richiederne la rettifica o la cancellazione, limitarne il trattamento, opporsi al trattamento e richiedere la portabilità dei dati. L'utente ha inoltre il diritto di proporre reclamo all'Autorità Garante per la Protezione dei Dati Personali (www.garanteprivacy.it).\n\nPer esercitare i propri diritti, l'utente può contattare il titolare all'indirizzo email indicato al punto 1.\n\n9. Modifiche\nIl titolare si riserva di aggiornare la presente informativa. Eventuali modifiche saranno pubblicate su questa pagina con indicazione della data di ultimo aggiornamento.`;
 
-Ultimo aggiornamento: marzo 2026
-
-1. Titolare del trattamento
-Il titolare del trattamento è [Nome del titolare / Ragione sociale], con sede in [indirizzo], contattabile all'indirizzo email [email].
-
-2. Dati raccolti
-Questa applicazione web non raccoglie dati personali. Non è prevista alcuna forma di registrazione, login o autenticazione. Non vengono richiesti nome, email, indirizzo o altri dati identificativi.
-
-3. Trattamento delle immagini
-Le immagini caricate dall'utente (mappe museali) vengono elaborate interamente nel browser dell'utente, sul suo dispositivo. Nessuna immagine viene trasmessa a server esterni, archiviata o conservata dall'applicazione. Al termine della sessione di navigazione o alla chiusura della pagina, tutte le immagini vengono eliminate automaticamente dalla memoria del browser.
-
-4. Cookie
-Questa applicazione non utilizza cookie di profilazione né cookie di terze parti a scopo pubblicitario. Per maggiori dettagli, consulta la Cookie Policy.
-
-5. Dati di navigazione
-Il server che ospita l'applicazione potrebbe raccogliere automaticamente alcuni dati tecnici (indirizzo IP, tipo di browser, sistema operativo, data e ora di accesso) nei log del server. Questi dati vengono trattati esclusivamente per garantire il funzionamento e la sicurezza del servizio, e non vengono utilizzati per identificare l'utente. La base giuridica è il legittimo interesse del titolare (art. 6, par. 1, lett. f del GDPR).
-
-6. Trasferimento dei dati
-Non viene effettuato alcun trasferimento di dati personali verso Paesi terzi o organizzazioni internazionali.
-
-7. Periodo di conservazione
-I dati tecnici di navigazione eventualmente registrati nei log del server vengono conservati per un massimo di 30 giorni, dopodiché vengono cancellati automaticamente.
-
-8. Diritti dell'utente
-Ai sensi degli articoli 15-22 del GDPR, l'utente ha diritto di accedere ai propri dati, richiederne la rettifica o la cancellazione, limitarne il trattamento, opporsi al trattamento e richiedere la portabilità dei dati. L'utente ha inoltre il diritto di proporre reclamo all'Autorità Garante per la Protezione dei Dati Personali (www.garanteprivacy.it).
-
-Per esercitare i propri diritti, l'utente può contattare il titolare all'indirizzo email indicato al punto 1.
-
-9. Modifiche
-Il titolare si riserva di aggiornare la presente informativa. Eventuali modifiche saranno pubblicate su questa pagina con indicazione della data di ultimo aggiornamento.`;
-
-const COOKIE_POLICY = `Cookie Policy ai sensi del Regolamento (UE) 2016/679 (GDPR) e della Direttiva 2002/58/CE (ePrivacy)
-
-Ultimo aggiornamento: marzo 2026
-
-1. Cosa sono i cookie
-I cookie sono piccoli file di testo che i siti web memorizzano sul dispositivo dell'utente. Possono essere utilizzati per diverse finalità: funzionamento tecnico del sito, analisi del traffico, profilazione pubblicitaria.
-
-2. Cookie utilizzati da questa applicazione
-Questa applicazione non utilizza cookie di alcun tipo. In particolare:
-a) Non vengono utilizzati cookie di profilazione.
-b) Non vengono utilizzati cookie di terze parti a scopo pubblicitario.
-c) Non vengono utilizzati cookie analitici (Google Analytics o strumenti simili).
-d) Non vengono utilizzati cookie di sessione per il login, poiché l'applicazione non prevede autenticazione.
-
-L'applicazione potrebbe utilizzare esclusivamente cookie tecnici strettamente necessari al funzionamento della pagina web (ad esempio, cookie impostati dal server di hosting per la gestione della connessione). Questi cookie non richiedono il consenso dell'utente ai sensi dell'art. 5, par. 3, della Direttiva ePrivacy, in quanto indispensabili per l'erogazione del servizio.
-
-3. Dati memorizzati nel browser
-L'applicazione utilizza temporaneamente la memoria del browser (RAM) per elaborare le immagini caricate dall'utente. Questi dati non vengono scritti in alcuno spazio di archiviazione persistente (localStorage, sessionStorage, IndexedDB) e vengono eliminati automaticamente alla chiusura della pagina.
-
-4. Cookie di terze parti
-L'applicazione carica il font Lexend da Google Fonts. Google potrebbe impostare cookie tecnici per ottimizzare la distribuzione del font. Per informazioni sui cookie di Google, consultare: policies.google.com/privacy
-
-5. Come gestire i cookie
-L'utente può gestire le preferenze sui cookie attraverso le impostazioni del proprio browser. La disattivazione dei cookie tecnici potrebbe compromettere il funzionamento dell'applicazione.
-
-Istruzioni per i browser principali:
-- Chrome: Impostazioni > Privacy e sicurezza > Cookie
-- Firefox: Impostazioni > Privacy e sicurezza
-- Safari: Preferenze > Privacy
-- Edge: Impostazioni > Cookie e autorizzazioni sito
-
-6. Aggiornamenti
-Eventuali modifiche alla presente Cookie Policy verranno pubblicate su questa pagina.
-
-7. Contatti
-Per informazioni sui cookie utilizzati da questa applicazione, contattare il titolare all'indirizzo email indicato nella Privacy Policy.`;
+const COOKIE_POLICY = `Cookie Policy ai sensi del Regolamento (UE) 2016/679 (GDPR) e della Direttiva 2002/58/CE (ePrivacy)\n\nUltimo aggiornamento: marzo 2026\n\n1. Cosa sono i cookie\nI cookie sono piccoli file di testo che i siti web memorizzano sul dispositivo dell'utente. Possono essere utilizzati per diverse finalità: funzionamento tecnico del sito, analisi del traffico, profilazione pubblicitaria.\n\n2. Cookie utilizzati da questa applicazione\nQuesta applicazione non utilizza cookie di alcun tipo. In particolare:\na) Non vengono utilizzati cookie di profilazione.\nb) Non vengono utilizzati cookie di terze parti a scopo pubblicitario.\nc) Non vengono utilizzati cookie analitici (Google Analytics o strumenti simili).\nd) Non vengono utilizzati cookie di sessione per il login, poiché l'applicazione non prevede autenticazione.\n\nL'applicazione potrebbe utilizzare esclusivamente cookie tecnici strettamente necessari al funzionamento della pagina web. Questi cookie non richiedono il consenso dell'utente ai sensi dell'art. 5, par. 3, della Direttiva ePrivacy, in quanto indispensabili per l'erogazione del servizio.\n\n3. Dati memorizzati nel browser\nL'applicazione utilizza temporaneamente la memoria del browser (RAM) per elaborare le immagini caricate dall'utente. Questi dati non vengono scritti in alcuno spazio di archiviazione persistente (localStorage, sessionStorage, IndexedDB) e vengono eliminati automaticamente alla chiusura della pagina.\n\n4. Cookie di terze parti\nL'applicazione carica il font Lexend da Google Fonts. Google potrebbe impostare cookie tecnici per ottimizzare la distribuzione del font. Per informazioni sui cookie di Google, consultare: policies.google.com/privacy\n\n5. Come gestire i cookie\nL'utente può gestire le preferenze sui cookie attraverso le impostazioni del proprio browser.\n\n6. Aggiornamenti\nEventuali modifiche alla presente Cookie Policy verranno pubblicate su questa pagina.\n\n7. Contatti\nPer informazioni sui cookie utilizzati da questa applicazione, contattare il titolare all'indirizzo email indicato nella Privacy Policy.`;
 
 /* === HOOKS === */
 function useBreakpoint() {
@@ -170,40 +365,31 @@ function useBreakpoint() {
   return bp;
 }
 
-/* === CATEGORY SHAPES (colorblind-safe visual cue) === */
+/* === CATEGORY SHAPES === */
 function CategoryShape({ shape, color, size = 12 }) {
-  const s = size;
-  const half = s / 2;
-  const svgStyle = { width: s, height: s, flexShrink: 0, display: "block" };
+  const s = size; const half = s / 2;
+  const st = { width: s, height: s, flexShrink: 0, display: "block" };
   switch (shape) {
-    case "circle":
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><circle cx={half} cy={half} r={half} fill={color} /></svg>;
-    case "square":
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><rect width={s} height={s} rx={1.5} fill={color} /></svg>;
-    case "triangle":
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${half},0 ${s},${s} 0,${s}`} fill={color} /></svg>;
-    case "diamond":
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${half},0 ${s},${half} ${half},${s} 0,${half}`} fill={color} /></svg>;
-    case "hexagon":
-      const q = s * 0.25;
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><polygon points={`${q},0 ${s-q},0 ${s},${half} ${s-q},${s} ${q},${s} 0,${half}`} fill={color} /></svg>;
-    default:
-      return <svg viewBox={`0 0 ${s} ${s}`} style={svgStyle}><rect width={s} height={s} rx={2} fill={color} /></svg>;
+    case "circle": return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><circle cx={half} cy={half} r={half} fill={color}/></svg>;
+    case "square": return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><rect width={s} height={s} rx={1.5} fill={color}/></svg>;
+    case "triangle": return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><polygon points={`${half},0 ${s},${s} 0,${s}`} fill={color}/></svg>;
+    case "diamond": return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><polygon points={`${half},0 ${s},${half} ${half},${s} 0,${half}`} fill={color}/></svg>;
+    case "hexagon": { const q=s*0.25; return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><polygon points={`${q},0 ${s-q},0 ${s},${half} ${s-q},${s} ${q},${s} 0,${half}`} fill={color}/></svg>; }
+    default: return <svg viewBox={`0 0 ${s} ${s}`} style={st} aria-hidden="true"><rect width={s} height={s} rx={2} fill={color}/></svg>;
   }
 }
 
 /* === MODAL === */
 function Modal({ title, onClose, isMobile, children }) {
+  useEffect(() => { const h = (e) => { if (e.key === "Escape") onClose(); }; window.addEventListener("keydown", h); return () => window.removeEventListener("keydown", h); }, [onClose]);
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 12 : 40 }}>
+    <div onClick={onClose} role="dialog" aria-modal="true" aria-label={title} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 12 : 40 }}>
       <div onClick={e => e.stopPropagation()} style={{ background: C.surface, borderRadius: 12, width: "100%", maxWidth: 680, maxHeight: isMobile ? "85vh" : "80vh", display: "flex", flexDirection: "column", boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "14px 16px" : "18px 24px", borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
           <h2 style={{ margin: 0, fontSize: isMobile ? 16 : 18, fontWeight: 700, color: C.text }}>{title}</h2>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}><X size={20} /></button>
+          <button onClick={onClose} aria-label="Chiudi" style={{ background: "none", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}><X size={20}/></button>
         </div>
-        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "16px 16px 24px" : "24px 24px 32px", WebkitOverflowScrolling: "touch" }}>
-          {children}
-        </div>
+        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "16px 16px 24px" : "24px 24px 32px", WebkitOverflowScrolling: "touch" }}>{children}</div>
       </div>
     </div>
   );
@@ -213,10 +399,7 @@ function PolicyContent({ text }) {
   return text.split("\n\n").map((block, i) => {
     if (/^Informativa|^Cookie Policy/.test(block)) return <h3 key={i} style={{ fontSize: 15, fontWeight: 700, color: C.text, margin: "0 0 16px", lineHeight: 1.4 }}>{block}</h3>;
     if (/^Ultimo aggiornamento/.test(block)) return <p key={i} style={{ fontSize: 12, color: C.textMuted, margin: "0 0 20px", fontStyle: "italic" }}>{block}</p>;
-    if (/^\d+\.\s/.test(block.trim())) {
-      const lines = block.split("\n"); const heading = lines[0]; const body = lines.slice(1).join("\n");
-      return <div key={i} style={{ marginBottom: 16 }}><h4 style={{ fontSize: 14, fontWeight: 600, color: C.text, margin: "0 0 6px" }}>{heading}</h4>{body && <p style={{ fontSize: 13, color: C.text, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>{body}</p>}</div>;
-    }
+    if (/^\d+\.\s/.test(block.trim())) { const lines = block.split("\n"); return <div key={i} style={{ marginBottom: 16 }}><h4 style={{ fontSize: 14, fontWeight: 600, color: C.text, margin: "0 0 6px" }}>{lines[0]}</h4>{lines.length > 1 && <p style={{ fontSize: 13, color: C.text, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>{lines.slice(1).join("\n")}</p>}</div>; }
     return <p key={i} style={{ fontSize: 13, color: C.text, lineHeight: 1.7, margin: "0 0 12px", whiteSpace: "pre-line" }}>{block}</p>;
   });
 }
@@ -225,30 +408,45 @@ function ProjectContent({ isMobile }) {
   return PROJECT_TEXT.map((block, i) => {
     if (block.type === "title") return <h3 key={i} style={{ fontSize: isMobile ? 22 : 26, fontWeight: 700, color: C.text, margin: "0 0 20px", letterSpacing: "-0.01em" }}>{block.text}</h3>;
     if (block.type === "heading") return <h4 key={i} style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "24px 0 8px" }}>{block.text}</h4>;
-    if (block.type === "download") return (
-      <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10 }}>
-        <FileDown size={20} style={{ color: C.primary, flexShrink: 0 }} />
-        <div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>Scarica i simboli SVG</div>
-          <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>File vettoriali, gratuiti, ridistribuibili con attribuzione</div>
-        </div>
-      </div>
-    );
+    if (block.type === "download") return <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10 }}><FileDown size={20} style={{ color: C.primary, flexShrink: 0 }}/><div><div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>Scarica i simboli SVG</div><div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>File vettoriali, gratuiti, ridistribuibili</div></div></div>;
     return <p key={i} style={{ fontSize: 14, color: C.text, lineHeight: 1.8, margin: "0 0 14px" }}>{block.text}</p>;
   });
 }
 
-function CookieBanner({ onAccept, isMobile }) {
+function CookieBanner({ onAccept, isMobile, t }) {
   return (
-    <div style={{ position: "fixed", bottom: isMobile ? 56 : 0, left: 0, right: 0, zIndex: 500, background: C.toolbarBg, color: C.toolbarText, padding: isMobile ? "12px 14px" : "14px 24px", display: "flex", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 10 : 16, boxShadow: "0 -2px 16px rgba(0,0,0,0.2)" }}>
-      <Cookie size={18} style={{ flexShrink: 0, marginTop: isMobile ? 2 : 0 }} />
-      <p style={{ fontSize: 12, lineHeight: 1.6, margin: 0, flex: 1 }}>
-        Questo sito utilizza esclusivamente cookie tecnici necessari al funzionamento dell'applicazione. Non vengono utilizzati cookie di profilazione o di terze parti a scopo pubblicitario. Continuando la navigazione accetti l'utilizzo dei cookie tecnici.
-      </p>
-      <button onClick={onAccept} style={{ padding: "8px 20px", borderRadius: 6, border: "none", background: C.secondary, color: C.toolbarBg, fontFamily: "inherit", fontWeight: 600, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>Ho capito</button>
+    <div role="alert" style={{ position: "fixed", bottom: isMobile ? 56 : 0, left: 0, right: 0, zIndex: 500, background: C.toolbarBg, color: C.toolbarText, padding: isMobile ? "12px 14px" : "14px 24px", display: "flex", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 10 : 16, boxShadow: "0 -2px 16px rgba(0,0,0,0.2)" }}>
+      <Cookie size={18} style={{ flexShrink: 0, marginTop: isMobile ? 2 : 0 }} aria-hidden="true"/>
+      <p style={{ fontSize: 12, lineHeight: 1.6, margin: 0, flex: 1 }}>{t.cookieBanner}</p>
+      <button onClick={onAccept} style={{ padding: "8px 20px", borderRadius: 6, border: "none", background: C.secondary, color: C.toolbarBg, fontFamily: "inherit", fontWeight: 600, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>{t.cookieOk}</button>
     </div>
   );
 }
+
+/* === LANGUAGE PICKER === */
+function LangPicker({ lang, setLang, isMobile }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ position: "relative" }}>
+      <button onClick={() => setOpen(!open)} aria-label="Cambia lingua" aria-expanded={open} style={{ display: "flex", alignItems: "center", gap: 4, padding: isMobile ? "7px 8px" : "7px 12px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.25)", background: "transparent", color: C.toolbarText, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+        <Globe size={15}/> {!isMobile && LANGS[lang].flag}
+      </button>
+      {open && (
+        <div style={{ position: "absolute", top: "100%", right: 0, marginTop: 4, background: C.surface, borderRadius: 8, boxShadow: "0 4px 20px rgba(0,0,0,0.15)", border: `1px solid ${C.border}`, zIndex: 1000, minWidth: 140, overflow: "hidden" }}>
+          {Object.values(LANGS).map(l => (
+            <button key={l.code} onClick={() => { setLang(l.code); setOpen(false); }} style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "10px 14px", border: "none", background: lang === l.code ? C.primaryLight : "transparent", color: C.text, fontFamily: "inherit", fontSize: 13, fontWeight: lang === l.code ? 600 : 400, cursor: "pointer", textAlign: "left" }}>
+              <span style={{ fontWeight: 700, fontSize: 11, color: C.textMuted, width: 20 }}>{l.flag}</span> {l.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* === FOCUS STYLE (accessibility) === */
+const focusOutline = "2px solid #0072B2";
+const focusOffset = "2px";
 
 /* === MAIN === */
 export default function CAAMapBuilder() {
@@ -256,14 +454,19 @@ export default function CAAMapBuilder() {
   const isMobile = bp === "mobile";
   const isTablet = bp === "tablet";
 
+  const [lang, setLang] = useState("it");
+  const t = T[lang];
+
   const [mapImage, setMapImage] = useState(null);
   const [mapDim, setMapDim] = useState({ w: 0, h: 0 });
   const [placed, setPlaced] = useState([]);
+  const [undoStack, setUndoStack] = useState([]);
   const [selected, setSelected] = useState(null);
   const [symSize, setSymSize] = useState(DEFAULT_SIZE);
   const [dragIdx, setDragIdx] = useState(null);
   const [dragOff, setDragOff] = useState({ x: 0, y: 0 });
   const [hoverIdx, setHoverIdx] = useState(null);
+  const [editingLabelIdx, setEditingLabelIdx] = useState(null);
   const [scale, setScale] = useState(1);
   const [showHelp, setShowHelp] = useState(false);
   const [search, setSearch] = useState("");
@@ -272,58 +475,99 @@ export default function CAAMapBuilder() {
   const [exporting, setExporting] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [modal, setModal] = useState(null); // "project" | "privacy" | "cookie" | null
+  const [modal, setModal] = useState(null);
   const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const mapFileRef = useRef(null);
   const mapRef = useRef(null);
 
+  /* --- Undo helpers --- */
+  const pushUndo = (currentPlaced) => {
+    setUndoStack(prev => {
+      const next = [...prev, JSON.parse(JSON.stringify(currentPlaced))];
+      return next.length > MAX_UNDO ? next.slice(-MAX_UNDO) : next;
+    });
+  };
+
+  const doUndo = () => {
+    if (undoStack.length === 0) { setError(t.nothingToUndo); return; }
+    setUndoStack(prev => {
+      const next = [...prev];
+      const last = next.pop();
+      setPlaced(last);
+      return next;
+    });
+  };
+
+  /* --- Keyboard shortcut for undo --- */
+  useEffect(() => {
+    const h = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); doUndo(); }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  });
+
+  /* --- Map upload with magic bytes validation --- */
   const handleMap = (e) => {
     const f = e.target.files?.[0]; if (!f) return;
-    if (f.size > MAX_FILE) { setError("Il file supera 2 MB."); e.target.value = ""; return; }
-    if (!f.type.match(/image\/(jpeg|png)/)) { setError("Formato non supportato. Usa JPEG o PNG."); e.target.value = ""; return; }
+    if (f.size > MAX_FILE) { setError(t.errFileSize); e.target.value = ""; return; }
+    if (!f.type.match(/image\/(jpeg|png)/)) { setError(t.errFileType); e.target.value = ""; return; }
     setError(null);
-    // Verify actual file content via magic bytes (MIME type alone can be spoofed)
     const headerReader = new FileReader();
     headerReader.onload = (he) => {
       const arr = new Uint8Array(he.target.result);
       const isJPEG = arr[0] === 0xFF && arr[1] === 0xD8 && arr[2] === 0xFF;
       const isPNG = arr[0] === 0x89 && arr[1] === 0x50 && arr[2] === 0x4E && arr[3] === 0x47;
-      if (!isJPEG && !isPNG) { setError("Il file non è un'immagine JPEG o PNG valida."); return; }
+      if (!isJPEG && !isPNG) { setError(t.errFileBad); return; }
       const r = new FileReader();
       r.onload = (ev) => {
         const img = new window.Image();
         img.onload = () => {
-          // Reject images with extreme dimensions to prevent memory exhaustion
-          if (img.width > 10000 || img.height > 10000) { setError("Immagine troppo grande. La dimensione massima è 10000×10000 pixel."); return; }
-          setMapImage(ev.target.result); setMapDim({ w: img.width, h: img.height }); setPlaced([]); setScale(1);
+          if (img.width > 10000 || img.height > 10000) { setError(t.errFileDimensions); return; }
+          setMapImage(ev.target.result); setMapDim({ w: img.width, h: img.height }); setPlaced([]); setUndoStack([]); setScale(1);
         };
-        img.onerror = () => { setError("Impossibile caricare l'immagine. Il file potrebbe essere danneggiato."); };
+        img.onerror = () => { setError(t.errFileCorrupt); };
         img.src = ev.target.result;
       };
-      r.onerror = () => { setError("Errore nella lettura del file."); };
+      r.onerror = () => { setError(t.errFileRead); };
       r.readAsDataURL(f);
     };
     headerReader.readAsArrayBuffer(f.slice(0, 8));
     e.target.value = "";
   };
 
+  /* --- Place symbol with undo and label --- */
   const placeSymbol = (e) => {
     if (!selected || !mapImage || dragIdx !== null) return;
     const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return;
     const sym = LIBRARY.flatMap(c => c.symbols).find(s => s.id === selected); if (!sym) return;
     const cx = e.touches ? e.touches[0].clientX : e.clientX;
     const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    pushUndo(placed);
     setPlaced(p => {
-      if (p.length >= 200) { setError("Numero massimo di simboli raggiunto (200)."); return p; }
-      return [...p, { id: crypto.randomUUID(), src: sym.src, name: sym.name, x: (cx - rect.left) / scale - symSize / 2, y: (cy - rect.top) / scale - symSize / 2, size: symSize }];
+      if (p.length >= 200) { setError(t.errMaxSymbols); return p; }
+      return [...p, { id: crypto.randomUUID(), src: sym.src, name: sym.name, x: (cx - rect.left) / scale - symSize / 2, y: (cy - rect.top) / scale - symSize / 2, size: symSize, label: "" }];
     });
     if (isMobile) setDrawerOpen(false);
   };
 
+  /* --- Remove symbol with undo --- */
+  const removeSymbol = (idx) => {
+    pushUndo(placed);
+    setPlaced(pr => pr.filter((_, j) => j !== idx));
+  };
+
+  /* --- Update label --- */
+  const updateLabel = (idx, label) => {
+    setPlaced(p => p.map((s, i) => i === idx ? { ...s, label } : s));
+  };
+
+  /* --- Drag --- */
   const startDrag = (e, idx) => {
     e.stopPropagation(); e.preventDefault();
     const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return;
+    pushUndo(placed);
     const p = placed[idx];
     const cx = e.touches ? e.touches[0].clientX : e.clientX;
     const cy = e.touches ? e.touches[0].clientY : e.clientY;
@@ -339,51 +583,76 @@ export default function CAAMapBuilder() {
     return () => { window.removeEventListener("mousemove", mv); window.removeEventListener("mouseup", up); window.removeEventListener("touchmove", mv); window.removeEventListener("touchend", up); };
   }, [dragIdx, dragOff, scale]);
 
+  /* --- Export with labels --- */
   const exportPNG = useCallback(async () => {
     if (!mapImage) return; setExporting(true);
     try {
-      // Check canvas memory limits (mobile Safari can crash on very large canvases)
-      const maxPixels = 16777216; // 4096x4096 safe limit for most mobile browsers
-      if (mapDim.w * mapDim.h > maxPixels) { setError("L'immagine è troppo grande per l'esportazione. Usa una mappa con risoluzione inferiore."); setExporting(false); return; }
+      const maxPixels = 16777216;
+      if (mapDim.w * mapDim.h > maxPixels) { setError(t.errCanvasTooBig); setExporting(false); return; }
       const cv = document.createElement("canvas"); cv.width = mapDim.w; cv.height = mapDim.h; const ctx = cv.getContext("2d");
-      if (!ctx) { setError("Il browser non supporta l'esportazione su canvas."); setExporting(false); return; }
+      if (!ctx) { setError(t.errCanvasUnsupported); setExporting(false); return; }
       const mi = new window.Image(); await new Promise((r, j) => { mi.onload = r; mi.onerror = j; mi.src = mapImage; }); ctx.drawImage(mi, 0, 0, mapDim.w, mapDim.h);
-      for (const p of placed) { const si = new window.Image(); await new Promise((r, j) => { si.onload = r; si.onerror = j; si.src = p.src; }); ctx.drawImage(si, p.x, p.y, p.size, p.size); }
+      for (const p of placed) {
+        const si = new window.Image(); await new Promise((r, j) => { si.onload = r; si.onerror = j; si.src = p.src; }); ctx.drawImage(si, p.x, p.y, p.size, p.size);
+        if (p.label) {
+          const fontSize = Math.max(12, Math.round(p.size * 0.22));
+          ctx.font = `600 ${fontSize}px 'Lexend', sans-serif`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = "rgba(44,41,38,0.85)";
+          const tw = ctx.measureText(p.label).width;
+          const pad = 4;
+          const lx = p.x + p.size / 2;
+          const ly = p.y + p.size + fontSize + 4;
+          ctx.beginPath(); ctx.roundRect(lx - tw/2 - pad, ly - fontSize, tw + pad*2, fontSize + pad, 3); ctx.fill();
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillText(p.label, lx, ly - 2);
+        }
+      }
       const a = document.createElement("a"); a.download = "mappa-caa-museo.png"; a.href = cv.toDataURL("image/png"); a.click();
-      // Release canvas memory
       cv.width = 0; cv.height = 0;
-    } catch (err) { setError("Errore durante l'esportazione. Riprova con un'immagine più piccola."); }
+    } catch (err) { setError(t.errExport); }
     setExporting(false);
-  }, [mapImage, mapDim, placed]);
+  }, [mapImage, mapDim, placed, t]);
 
   const filtered = LIBRARY.map(c => ({ ...c, symbols: c.symbols.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) })).filter(c => c.symbols.length > 0);
   const dW = mapDim.w * scale, dH = mapDim.h * scale;
   const sideW = isTablet ? 200 : 230;
 
+  /* === SIDEBAR CONTENT === */
   const SidebarContent = (
     <>
       <div style={{ padding: "10px 12px 6px" }}>
         <div style={{ position: "relative" }}>
-          <Search size={14} style={{ position: "absolute", left: 10, top: 10, color: C.textLight }} />
-          <input placeholder="Cerca simbolo..." value={search} onChange={e => setSearch(e.target.value)} style={{ width: "100%", boxSizing: "border-box", padding: "8px 10px 8px 30px", borderRadius: 7, border: `1px solid ${C.border}`, fontSize: 13, fontFamily: "inherit", color: C.text, background: C.bg, outline: "none" }} />
+          <Search size={14} style={{ position: "absolute", left: 10, top: 10, color: C.textLight }} aria-hidden="true"/>
+          <input placeholder={t.searchSymbol} value={search} onChange={e => setSearch(e.target.value)} aria-label={t.searchSymbol}
+            style={{ width: "100%", boxSizing: "border-box", padding: "8px 10px 8px 30px", borderRadius: 7, border: `1px solid ${C.border}`, fontSize: 13, fontFamily: "inherit", color: C.text, background: C.bg, outline: "none" }}
+            onFocus={e => e.target.style.outline = focusOutline} onBlur={e => e.target.style.outline = "none"} />
         </div>
       </div>
       <div style={{ padding: "4px 12px 8px", borderBottom: `1px solid ${C.border}` }}>
-        <label style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, display: "flex", justifyContent: "space-between" }}><span>Dimensione</span><span style={{ color: C.text, fontWeight: 600 }}>{symSize}px</span></label>
-        <input type="range" min={32} max={128} step={8} value={symSize} onChange={e => setSymSize(+e.target.value)} style={{ width: "100%", accentColor: C.primary, marginTop: 4 }} />
+        <label style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, display: "flex", justifyContent: "space-between" }}><span>{t.size}</span><span style={{ color: C.text, fontWeight: 600 }}>{symSize}px</span></label>
+        <input type="range" min={32} max={128} step={8} value={symSize} onChange={e => setSymSize(+e.target.value)} aria-label={t.size}
+          style={{ width: "100%", accentColor: C.primary, marginTop: 4 }} />
       </div>
-      <div style={{ flex: 1, overflowY: "auto", padding: "4px 0", WebkitOverflowScrolling: "touch" }}>
-        {filtered.map(cat => (
-          <div key={cat.category}>
-            <button onClick={() => setOpenCats(p => ({ ...p, [cat.category]: !p[cat.category] }))} style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: C.text, textAlign: "left" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "4px 0", WebkitOverflowScrolling: "touch" }} role="list" aria-label={t.libraryTitle}>
+        {filtered.map(cat => {
+          const catName = t[CAT_KEYS[cat.category]] || cat.category;
+          return (
+          <div key={cat.category} role="listitem">
+            <button onClick={() => setOpenCats(p => ({ ...p, [cat.category]: !p[cat.category] }))} aria-expanded={openCats[cat.category]} aria-label={catName}
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: C.text, textAlign: "left", outline: "none" }}
+              onFocus={e => e.target.style.outlineOffset = focusOffset} onBlur={e => e.target.style.outline = "none"}>
               <CategoryShape shape={cat.shape} color={cat.color} size={12} />
-              {cat.category}
-              <span style={{ marginLeft: "auto", fontSize: 10, color: C.textLight }}>{openCats[cat.category] ? "▾" : "▸"}</span>
+              {catName}
+              <span style={{ marginLeft: "auto", fontSize: 10, color: C.textLight }} aria-hidden="true">{openCats[cat.category] ? "▾" : "▸"}</span>
             </button>
             {openCats[cat.category] && (
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(auto-fill, minmax(70px, 1fr))" : "1fr 1fr 1fr", gap: 4, padding: "0 8px 8px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(auto-fill, minmax(70px, 1fr))" : "1fr 1fr 1fr", gap: 4, padding: "0 8px 8px" }} role="grid">
                 {cat.symbols.map(sym => (
-                  <button key={sym.id} onClick={() => setSelected(selected === sym.id ? null : sym.id)} title={sym.name} style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto" }}>
+                  <button key={sym.id} onClick={() => setSelected(selected === sym.id ? null : sym.id)} title={sym.name} role="gridcell"
+                    aria-pressed={selected === sym.id} aria-label={sym.name}
+                    style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
+                    onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
                     <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
                     <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: selected === sym.id ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
                   </button>
@@ -391,93 +660,126 @@ export default function CAAMapBuilder() {
               </div>
             )}
           </div>
-        ))}
+        );})}
       </div>
     </>
   );
 
   return (
-    <div style={{ minHeight: "100vh", maxHeight: "100vh", background: C.bg, fontFamily: "'Lexend', sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", maxHeight: "100vh", background: C.bg, fontFamily: "'Lexend', sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }} lang={lang}>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet" referrerPolicy="no-referrer" />
-      <input ref={mapFileRef} type="file" accept="image/jpeg,image/png" onChange={handleMap} style={{ display: "none" }} />
+      <input ref={mapFileRef} type="file" accept="image/jpeg,image/png" onChange={handleMap} style={{ display: "none" }} aria-hidden="true" />
+
+      {/* SKIP LINK (accessibility) */}
+      <a href="#map-area" style={{ position: "absolute", left: -9999, top: 0, background: C.primary, color: "#fff", padding: "8px 16px", zIndex: 99999, fontSize: 14, fontWeight: 600, borderRadius: "0 0 8px 0" }}
+        onFocus={e => e.target.style.left = "0"} onBlur={e => e.target.style.left = "-9999px"}>
+        Vai alla mappa
+      </a>
 
       {/* HEADER */}
-      <header style={{ background: C.toolbarBg, color: C.toolbarText, padding: isMobile ? "10px 12px" : "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, cursor: "pointer" }} onClick={() => setModal("project")}>
-          <div style={{ width: isMobile ? 28 : 34, height: isMobile ? 28 : 34, borderRadius: 8, background: C.primary, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <header role="banner" style={{ background: C.toolbarBg, color: C.toolbarText, padding: isMobile ? "10px 12px" : "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, cursor: "pointer" }} onClick={() => setModal("project")} role="button" tabIndex={0} aria-label={t.project} onKeyDown={e => e.key === "Enter" && setModal("project")}>
+          <div style={{ width: isMobile ? 28 : 34, height: isMobile ? 28 : 34, borderRadius: 8, background: C.primary, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} aria-hidden="true">
             <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 700, color: "#fff" }}>4all</span>
           </div>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: isMobile ? 14 : 18, fontWeight: 700, whiteSpace: "nowrap" }}>CAA4all</div>
-            {!isMobile && <div style={{ fontSize: 11, opacity: 0.7, fontWeight: 300 }}>Mappe museali accessibili con simboli CAA</div>}
+            <div style={{ fontSize: isMobile ? 14 : 18, fontWeight: 700, whiteSpace: "nowrap" }}>{t.appName}</div>
+            {!isMobile && <div style={{ fontSize: 11, opacity: 0.7, fontWeight: 300 }}>{t.appSub}</div>}
           </div>
         </div>
-        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-          <HBtn icon={<Info size={15}/>} label={isMobile ? "" : "Il progetto"} onClick={() => setModal("project")} />
-          {!isMobile && <HBtn icon={<HelpCircle size={15}/>} label="Guida" onClick={() => setShowHelp(!showHelp)} />}
-          <HBtn icon={<RotateCcw size={15}/>} label={isMobile ? "" : "Reset"} onClick={() => { setPlaced([]); setMapImage(null); setError(null); }} />
-          <HBtn icon={<Download size={15}/>} label={isMobile ? "" : (exporting ? "Esporto..." : "Esporta PNG")} primary onClick={exportPNG} disabled={!mapImage || exporting} />
+        <div style={{ display: "flex", gap: 6, flexShrink: 0, alignItems: "center" }}>
+          <LangPicker lang={lang} setLang={setLang} isMobile={isMobile} />
+          <HBtn icon={<Info size={15}/>} label={isMobile ? "" : t.project} onClick={() => setModal("project")} ariaLabel={t.project} />
+          {!isMobile && <HBtn icon={<HelpCircle size={15}/>} label={t.guide} onClick={() => setShowHelp(!showHelp)} ariaLabel={t.guide} />}
+          <HBtn icon={<Undo2 size={15}/>} label={isMobile ? "" : t.undo} onClick={doUndo} disabled={undoStack.length === 0} ariaLabel={t.undo} />
+          <HBtn icon={<RotateCcw size={15}/>} label={isMobile ? "" : t.reset} onClick={() => { pushUndo(placed); setPlaced([]); setMapImage(null); setError(null); setUndoStack([]); }} ariaLabel={t.reset} />
+          <HBtn icon={<Download size={15}/>} label={isMobile ? "" : (exporting ? t.exporting : t.exportPng)} primary onClick={exportPNG} disabled={!mapImage || exporting} ariaLabel={t.exportPng} />
         </div>
       </header>
 
       {showHelp && (
-        <div style={{ background: C.primaryLight, borderBottom: `1px solid ${C.primary}`, padding: "12px 16px", fontSize: 13, color: C.text, lineHeight: 1.7, flexShrink: 0 }}>
-          <strong>Come funziona</strong><br/>
-          1. Carica la mappa del museo (JPEG/PNG, max 2 MB).<br/>
-          2. Scegli un simbolo dalla libreria.<br/>
-          3. Tocca/clicca sulla mappa per posizionarlo. Trascinalo per spostarlo.<br/>
-          4. Esporta la mappa come PNG, pronta per la stampa.
-          <div style={{ marginTop: 6 }}><button onClick={() => setShowHelp(false)} style={{ background: "none", border: "none", color: C.primary, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>Ho capito, chiudi</button></div>
+        <div role="region" aria-label={t.howTitle} style={{ background: C.primaryLight, borderBottom: `1px solid ${C.primary}`, padding: "12px 16px", fontSize: 13, color: C.text, lineHeight: 1.7, flexShrink: 0 }}>
+          <strong>{t.howTitle}</strong><br/>
+          {t.how1}<br/>{t.how2}<br/>{t.how3}<br/>{t.how4}
+          <div style={{ marginTop: 6 }}><button onClick={() => setShowHelp(false)} style={{ background: "none", border: "none", color: C.primary, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>{t.howClose}</button></div>
         </div>
       )}
 
       {error && (
-        <div style={{ background: C.warningLight, borderBottom: `2px solid ${C.warning}`, padding: "8px 16px", fontSize: 13, color: C.warning, fontWeight: 500, display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-          {error}<button onClick={() => setError(null)} style={{ background: "none", border: "none", color: C.warning, cursor: "pointer", padding: 0 }}><X size={16}/></button>
+        <div role="alert" style={{ background: C.warningLight, borderBottom: `2px solid ${C.warning}`, padding: "8px 16px", fontSize: 13, color: C.warning, fontWeight: 500, display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
+          {error}<button onClick={() => setError(null)} aria-label="Chiudi errore" style={{ background: "none", border: "none", color: C.warning, cursor: "pointer", padding: 0 }}><X size={16}/></button>
         </div>
       )}
 
       <div style={{ display: "flex", flex: 1, minHeight: 0, position: "relative" }}>
         {!isMobile && (
-          <aside style={{ width: sidebarOpen ? sideW : 0, minWidth: sidebarOpen ? sideW : 0, background: C.surface, borderRight: sidebarOpen ? `1px solid ${C.border}` : "none", display: "flex", flexDirection: "column", overflow: "hidden", transition: "width 0.25s, min-width 0.25s", flexShrink: 0 }}>
+          <aside role="complementary" aria-label={t.libraryTitle} style={{ width: sidebarOpen ? sideW : 0, minWidth: sidebarOpen ? sideW : 0, background: C.surface, borderRight: sidebarOpen ? `1px solid ${C.border}` : "none", display: "flex", flexDirection: "column", overflow: "hidden", transition: "width 0.25s, min-width 0.25s", flexShrink: 0 }}>
             {sidebarOpen && SidebarContent}
           </aside>
         )}
 
-        <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
-          <div style={{ padding: isMobile ? "6px 10px" : "8px 16px", background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: isMobile ? 6 : 10, fontSize: 12, flexWrap: "nowrap", overflowX: "auto", flexShrink: 0 }}>
-            {!isMobile && <button onClick={() => setSidebarOpen(!sidebarOpen)} style={tBtn}><Layers size={14}/></button>}
-            <button onClick={() => mapFileRef.current?.click()} style={tBtn}><Upload size={14}/> {isMobile ? "Mappa" : "Carica mappa"}</button>
-            <span style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
-            <button onClick={() => setScale(s => Math.max(s - 0.15, 0.2))} style={tBtn} disabled={!mapImage}><ZoomOut size={14}/></button>
-            <span style={{ color: C.textMuted, fontWeight: 500, minWidth: 36, textAlign: "center", flexShrink: 0 }}>{Math.round(scale * 100)}%</span>
-            <button onClick={() => setScale(s => Math.min(s + 0.15, 3))} style={tBtn} disabled={!mapImage}><ZoomIn size={14}/></button>
-            {!isMobile && <button onClick={() => setScale(1)} style={{ ...tBtn, fontSize: 11 }} disabled={!mapImage}>Adatta</button>}
+        <main role="main" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
+          {/* Toolbar */}
+          <nav aria-label="Strumenti mappa" style={{ padding: isMobile ? "6px 10px" : "8px 16px", background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: isMobile ? 6 : 10, fontSize: 12, flexWrap: "nowrap", overflowX: "auto", flexShrink: 0 }}>
+            {!isMobile && <button onClick={() => setSidebarOpen(!sidebarOpen)} style={tBtn} aria-label={sidebarOpen ? "Chiudi libreria" : "Apri libreria"} aria-expanded={sidebarOpen}><Layers size={14}/></button>}
+            <button onClick={() => mapFileRef.current?.click()} style={tBtn} aria-label={t.uploadMap}><Upload size={14}/> {isMobile ? t.uploadMapShort : t.uploadMap}</button>
+            <span style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} aria-hidden="true" />
+            <button onClick={() => setScale(s => Math.max(s - 0.15, 0.2))} style={tBtn} disabled={!mapImage} aria-label="Zoom indietro"><ZoomOut size={14}/></button>
+            <span style={{ color: C.textMuted, fontWeight: 500, minWidth: 36, textAlign: "center", flexShrink: 0 }} aria-live="polite">{Math.round(scale * 100)}%</span>
+            <button onClick={() => setScale(s => Math.min(s + 0.15, 3))} style={tBtn} disabled={!mapImage} aria-label="Zoom avanti"><ZoomIn size={14}/></button>
+            {!isMobile && <button onClick={() => setScale(1)} style={{ ...tBtn, fontSize: 11 }} disabled={!mapImage} aria-label={t.fit}>{t.fit}</button>}
             <div style={{ flex: 1, minWidth: 8 }} />
-            {selected && !isMobile && <div style={{ display: "flex", alignItems: "center", gap: 6, background: C.primaryLight, border: `1px solid ${C.primary}`, borderRadius: 6, padding: "4px 10px", color: C.primary, fontWeight: 500, fontSize: 12, whiteSpace: "nowrap", flexShrink: 0 }}><MousePointer2 size={13}/> Clicca sulla mappa</div>}
-            {placed.length > 0 && <span style={{ color: C.textMuted, whiteSpace: "nowrap", flexShrink: 0 }}>{placed.length}</span>}
-          </div>
+            {selected && !isMobile && <div style={{ display: "flex", alignItems: "center", gap: 6, background: C.primaryLight, border: `1px solid ${C.primary}`, borderRadius: 6, padding: "4px 10px", color: C.primary, fontWeight: 500, fontSize: 12, whiteSpace: "nowrap", flexShrink: 0 }} role="status"><MousePointer2 size={13}/> {t.clickToPlace}</div>}
+            {placed.length > 0 && <span style={{ color: C.textMuted, whiteSpace: "nowrap", flexShrink: 0 }} aria-live="polite">{placed.length}</span>}
+          </nav>
 
-          <div style={{ flex: 1, overflow: "auto", display: "flex", alignItems: mapImage ? "flex-start" : "center", justifyContent: mapImage ? "flex-start" : "center", padding: mapImage ? (isMobile ? 10 : 20) : 0, background: C.mapBg, WebkitOverflowScrolling: "touch", paddingBottom: isMobile && drawerOpen ? 320 : (isMobile ? 90 : 36) }}>
+          {/* Map area */}
+          <div id="map-area" tabIndex={-1} style={{ flex: 1, overflow: "auto", display: "flex", alignItems: mapImage ? "flex-start" : "center", justifyContent: mapImage ? "flex-start" : "center", padding: mapImage ? (isMobile ? 10 : 20) : 0, background: C.mapBg, WebkitOverflowScrolling: "touch", paddingBottom: isMobile && drawerOpen ? 320 : (isMobile ? 90 : 36) }}>
             {!mapImage ? (
-              <div onClick={() => mapFileRef.current?.click()} style={{ width: isMobile ? "90%" : 400, maxWidth: 400, padding: isMobile ? "40px 24px" : "56px 36px", textAlign: "center", borderRadius: 12, border: `2px dashed ${C.border}`, background: C.surface, cursor: "pointer" }}>
-                <Image size={isMobile ? 36 : 48} strokeWidth={1.2} style={{ color: C.textLight, marginBottom: 14 }} />
-                <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 600, color: C.text, marginBottom: 6 }}>Carica la mappa del museo</div>
-                <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>JPEG o PNG · Max 2 MB</div>
+              <div onClick={() => mapFileRef.current?.click()} role="button" tabIndex={0} aria-label={t.loadMapTitle}
+                onKeyDown={e => e.key === "Enter" && mapFileRef.current?.click()}
+                style={{ width: isMobile ? "90%" : 400, maxWidth: 400, padding: isMobile ? "40px 24px" : "56px 36px", textAlign: "center", borderRadius: 12, border: `2px dashed ${C.border}`, background: C.surface, cursor: "pointer", outline: "none" }}
+                onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
+                <Image size={isMobile ? 36 : 48} strokeWidth={1.2} style={{ color: C.textLight, marginBottom: 14 }} aria-hidden="true" />
+                <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 600, color: C.text, marginBottom: 6 }}>{t.loadMapTitle}</div>
+                <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{t.loadMapSub}</div>
               </div>
             ) : (
-              <div ref={mapRef} onClick={placeSymbol} style={{ position: "relative", width: dW, height: dH, flexShrink: 0, cursor: selected ? "crosshair" : "default", boxShadow: "0 2px 20px rgba(0,0,0,0.12)", borderRadius: 4, overflow: "hidden" }}>
+              <div ref={mapRef} onClick={placeSymbol} aria-label="Mappa del museo" role="application"
+                style={{ position: "relative", width: dW, height: dH, flexShrink: 0, cursor: selected ? "crosshair" : "default", boxShadow: "0 2px 20px rgba(0,0,0,0.12)", borderRadius: 4, overflow: "hidden" }}>
                 <img src={mapImage} alt="Mappa museo" style={{ width: dW, height: dH, display: "block", userSelect: "none", pointerEvents: "none" }} draggable={false} />
                 {placed.map((p, i) => (
                   <div key={p.id} onMouseDown={e => startDrag(e, i)} onTouchStart={e => startDrag(e, i)} onMouseEnter={() => setHoverIdx(i)} onMouseLeave={() => setHoverIdx(null)}
-                    style={{ position: "absolute", left: p.x * scale, top: p.y * scale, width: p.size * scale, height: p.size * scale, cursor: "grab", zIndex: dragIdx === i ? 100 : 10, filter: dragIdx === i ? "drop-shadow(0 4px 8px rgba(0,0,0,0.35))" : "drop-shadow(0 1px 4px rgba(0,0,0,0.25))", transition: dragIdx === i ? "none" : "filter 0.15s" }}>
-                    <img src={p.src} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "contain", userSelect: "none", pointerEvents: "none" }} draggable={false} />
+                    tabIndex={0} role="button" aria-label={`${p.name}${p.label ? ': ' + p.label : ''}`}
+                    onKeyDown={e => { if (e.key === "Delete" || e.key === "Backspace") removeSymbol(i); if (e.key === "Enter") setEditingLabelIdx(i); }}
+                    style={{ position: "absolute", left: p.x * scale, top: p.y * scale, width: p.size * scale, height: p.size * scale, cursor: "grab", zIndex: dragIdx === i ? 100 : 10, filter: dragIdx === i ? "drop-shadow(0 4px 8px rgba(0,0,0,0.35))" : "drop-shadow(0 1px 4px rgba(0,0,0,0.25))", transition: dragIdx === i ? "none" : "filter 0.15s", outline: "none" }}
+                    onFocus={e => { e.target.style.outline = `3px solid ${C.primary}`; setHoverIdx(i); }} onBlur={e => { e.target.style.outline = "none"; setHoverIdx(null); }}>
+                    <img src={p.src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain", userSelect: "none", pointerEvents: "none" }} draggable={false} />
+                    {/* Label under symbol */}
+                    {(editingLabelIdx === i) ? (
+                      <input autoFocus value={p.label} onChange={e => updateLabel(i, e.target.value)}
+                        onBlur={() => setEditingLabelIdx(null)} onKeyDown={e => { if (e.key === "Enter") setEditingLabelIdx(null); e.stopPropagation(); }}
+                        onClick={e => e.stopPropagation()}
+                        placeholder={t.labelPlaceholder}
+                        style={{ position: "absolute", bottom: -28 * (1/scale), left: "50%", transform: `translateX(-50%) scale(${1/scale})`, transformOrigin: "top center", background: C.surface, border: `2px solid ${C.primary}`, borderRadius: 4, padding: "3px 8px", fontSize: 12, fontFamily: "inherit", fontWeight: 600, textAlign: "center", color: C.text, outline: "none", minWidth: 80, zIndex: 120 }} />
+                    ) : p.label ? (
+                      <div onClick={e => { e.stopPropagation(); setEditingLabelIdx(i); }}
+                        style={{ position: "absolute", bottom: -22 * (1/scale), left: "50%", transform: `translateX(-50%) scale(${1/scale})`, transformOrigin: "top center", background: "rgba(44,41,38,0.85)", color: "#fff", fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 4, whiteSpace: "nowrap", cursor: "text", zIndex: 15 }}>
+                        {p.label}
+                      </div>
+                    ) : null}
+                    {/* Hover/focus controls */}
                     {(hoverIdx === i || (isMobile && i === placed.length - 1 && dragIdx === null)) && (
                       <>
-                        <button onClick={e => { e.stopPropagation(); setPlaced(pr => pr.filter((_, j) => j !== i)); }} style={{ position: "absolute", top: -10, right: -10, width: isMobile ? 28 : 22, height: isMobile ? 28 : 22, borderRadius: "50%", border: "2px solid #fff", background: C.danger, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 110, padding: 0 }}><X size={isMobile ? 14 : 12}/></button>
-                        <div style={{ position: "absolute", bottom: isMobile ? -20 : -24, left: "50%", transform: "translateX(-50%)", background: C.toolbarBg, color: "#fff", fontSize: 10, fontWeight: 500, padding: "2px 8px", borderRadius: 4, whiteSpace: "nowrap" }}>{p.name}</div>
+                        <button onClick={e => { e.stopPropagation(); removeSymbol(i); }} aria-label={`Rimuovi ${p.name}`}
+                          style={{ position: "absolute", top: -10, right: -10, width: isMobile ? 28 : 22, height: isMobile ? 28 : 22, borderRadius: "50%", border: "2px solid #fff", background: C.danger, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 110, padding: 0 }}><X size={isMobile ? 14 : 12}/></button>
+                        {!p.label && (
+                          <button onClick={e => { e.stopPropagation(); setEditingLabelIdx(i); }} aria-label={t.addLabel}
+                            style={{ position: "absolute", top: -10, left: -10, width: isMobile ? 28 : 22, height: isMobile ? 28 : 22, borderRadius: "50%", border: "2px solid #fff", background: C.primary, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 110, padding: 0 }}><Type size={isMobile ? 12 : 10}/></button>
+                        )}
+                        {!p.label && <div style={{ position: "absolute", bottom: isMobile ? -20 : -24, left: "50%", transform: "translateX(-50%)", background: C.toolbarBg, color: "#fff", fontSize: 10, fontWeight: 500, padding: "2px 8px", borderRadius: 4, whiteSpace: "nowrap", zIndex: 15 }}>{p.name}</div>}
                       </>
                     )}
                   </div>
@@ -486,12 +788,13 @@ export default function CAAMapBuilder() {
             )}
           </div>
 
+          {/* Footer desktop */}
           {!isMobile && (
             <div style={{ padding: "8px 20px", background: C.surfaceAlt, borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", gap: 20, fontSize: 11, color: C.textMuted, flexShrink: 0 }}>
-              <span>© {new Date().getFullYear()} CAA4all · Simboli di Mattia Boero</span>
-              <button onClick={() => setModal("project")} style={footerLink}><Info size={11}/> Il progetto</button>
-              <button onClick={() => setModal("privacy")} style={footerLink}><Shield size={11}/> Privacy</button>
-              <button onClick={() => setModal("cookie")} style={footerLink}><Cookie size={11}/> Cookie</button>
+              <span>© {new Date().getFullYear()} CAA4all · {t.symbolsBy}</span>
+              <button onClick={() => setModal("project")} style={footerLink}><Info size={11}/> {t.project}</button>
+              <button onClick={() => setModal("privacy")} style={footerLink}><Shield size={11}/> {t.privacy}</button>
+              <button onClick={() => setModal("cookie")} style={footerLink}><Cookie size={11}/> {t.cookie}</button>
             </div>
           )}
         </main>
@@ -500,40 +803,42 @@ export default function CAAMapBuilder() {
       {/* MOBILE DRAWER */}
       {isMobile && (
         <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: C.surface, borderTop: `1px solid ${C.border}`, borderRadius: "16px 16px 0 0", boxShadow: "0 -4px 24px rgba(0,0,0,0.15)", zIndex: 200, display: "flex", flexDirection: "column", maxHeight: drawerOpen ? "65vh" : 56, transition: "max-height 0.3s ease", overflow: "hidden" }}>
-          <button onClick={() => setDrawerOpen(!drawerOpen)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px 16px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 14, fontWeight: 600, color: C.text, flexShrink: 0, position: "relative" }}>
-            <div style={{ width: 36, height: 4, borderRadius: 2, background: C.border, position: "absolute", top: 8 }} />
-            <Layers size={16} style={{ color: C.primary }} />
-            <span>Libreria simboli</span>
-            {selected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.primary }} />}
-            {drawerOpen ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+          <button onClick={() => setDrawerOpen(!drawerOpen)} aria-expanded={drawerOpen} aria-label={t.libraryTitle}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px 16px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 14, fontWeight: 600, color: C.text, flexShrink: 0, position: "relative" }}>
+            <div style={{ width: 36, height: 4, borderRadius: 2, background: C.border, position: "absolute", top: 8 }} aria-hidden="true" />
+            <Layers size={16} style={{ color: C.primary }} aria-hidden="true" />
+            <span>{t.libraryTitle}</span>
+            {selected && <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.primary }} aria-hidden="true" />}
+            {drawerOpen ? <ChevronDown size={16} aria-hidden="true" /> : <ChevronUp size={16} aria-hidden="true" />}
           </button>
           {drawerOpen && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
               {SidebarContent}
               <div style={{ padding: "10px 14px", borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", gap: 14, fontSize: 11, color: C.textMuted, flexShrink: 0, flexWrap: "wrap" }}>
-                <span>Simboli di Mattia Boero</span>
-                <button onClick={() => setModal("project")} style={footerLink}><Info size={10}/> Progetto</button>
-                <button onClick={() => setModal("privacy")} style={footerLink}><Shield size={10}/> Privacy</button>
-                <button onClick={() => setModal("cookie")} style={footerLink}><Cookie size={10}/> Cookie</button>
+                <span>{t.symbolsBy}</span>
+                <button onClick={() => setModal("project")} style={footerLink}><Info size={10}/> {t.project}</button>
+                <button onClick={() => setModal("privacy")} style={footerLink}><Shield size={10}/> {t.privacy}</button>
+                <button onClick={() => setModal("cookie")} style={footerLink}><Cookie size={10}/> {t.cookie}</button>
               </div>
             </div>
           )}
         </div>
       )}
 
-      {/* COOKIE BANNER */}
-      {!cookieAccepted && <CookieBanner onAccept={() => setCookieAccepted(true)} isMobile={isMobile} />}
+      {!cookieAccepted && <CookieBanner onAccept={() => setCookieAccepted(true)} isMobile={isMobile} t={t} />}
 
-      {/* MODALS */}
-      {modal === "project" && <Modal title="Il progetto" onClose={() => setModal(null)} isMobile={isMobile}><ProjectContent isMobile={isMobile} /></Modal>}
-      {modal === "privacy" && <Modal title="Privacy Policy" onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={PRIVACY_POLICY} /></Modal>}
-      {modal === "cookie" && <Modal title="Cookie Policy" onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={COOKIE_POLICY} /></Modal>}
+      {modal === "project" && <Modal title={t.project} onClose={() => setModal(null)} isMobile={isMobile}><ProjectContent isMobile={isMobile} /></Modal>}
+      {modal === "privacy" && <Modal title={t.privacy + " Policy"} onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={PRIVACY_POLICY} /></Modal>}
+      {modal === "cookie" && <Modal title={t.cookie + " Policy"} onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={COOKIE_POLICY} /></Modal>}
     </div>
   );
 }
 
-function HBtn({ icon, label, onClick, primary, disabled }) {
-  return <button onClick={onClick} disabled={disabled} style={{ display: "flex", alignItems: "center", gap: label ? 5 : 0, padding: label ? "7px 12px" : "7px 8px", borderRadius: 6, border: primary ? "none" : "1px solid rgba(255,255,255,0.25)", background: primary ? C.secondary : "transparent", color: primary ? C.toolbarBg : C.toolbarText, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1 }}>{icon} {label}</button>;
+function HBtn({ icon, label, onClick, primary, disabled, ariaLabel }) {
+  return <button onClick={onClick} disabled={disabled} aria-label={ariaLabel || label || undefined}
+    style={{ display: "flex", alignItems: "center", gap: label ? 5 : 0, padding: label ? "7px 12px" : "7px 8px", borderRadius: 6, border: primary ? "none" : "1px solid rgba(255,255,255,0.25)", background: primary ? C.secondary : "transparent", color: primary ? C.toolbarBg : C.toolbarText, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1, outline: "none" }}
+    onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}
+  >{icon} {label}</button>;
 }
 
 const tBtn = { display: "flex", alignItems: "center", gap: 4, padding: "6px 10px", borderRadius: 5, border: `1px solid ${C.border}`, background: C.surface, color: C.text, fontFamily: "'Lexend', sans-serif", fontWeight: 500, fontSize: 12, cursor: "pointer", flexShrink: 0 };
