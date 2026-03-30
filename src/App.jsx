@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Download, MousePointer2, ZoomIn, ZoomOut, Upload, X, RotateCcw, Image, HelpCircle, Search, ChevronUp, ChevronDown, Layers, Shield, Cookie, Info, FileDown, Undo2, Type, Globe } from "lucide-react";
+import { Download, MousePointer2, ZoomIn, ZoomOut, Upload, X, RotateCcw, Image, HelpCircle, Search, ChevronUp, ChevronDown, Layers, Shield, Cookie, Info, FileDown, Undo2, Type, Globe, Grid3X3, Share2, FileText } from "lucide-react";
 
 /* === PALETTE — Okabe-Ito colorblind-safe === */
 const C = {
@@ -74,6 +74,12 @@ const T = {
     catContenuti: "Contenuti",
     catAccessibilita: "Accessibilità",
     catSicurezza: "Sicurezza",
+    snapGrid: "Griglia",
+    gridSize: "Griglia",
+    exportPdf: "Esporta PDF",
+    pdfFormat: "Formato",
+    share: "Condividi",
+    shareText: "CAA4all: webapp gratuita per creare mappe museali accessibili con simboli CAA",
   },
   en: {
     appName: "CAA4all",
@@ -122,6 +128,12 @@ const T = {
     catContenuti: "Content",
     catAccessibilita: "Accessibility",
     catSicurezza: "Safety",
+    snapGrid: "Grid",
+    gridSize: "Grid",
+    exportPdf: "Export PDF",
+    pdfFormat: "Format",
+    share: "Share",
+    shareText: "CAA4all: free webapp to create accessible museum maps with AAC symbols",
   },
   fr: {
     appName: "CAA4all",
@@ -170,6 +182,12 @@ const T = {
     catContenuti: "Contenus",
     catAccessibilita: "Accessibilité",
     catSicurezza: "Sécurité",
+    snapGrid: "Grille",
+    gridSize: "Grille",
+    exportPdf: "Exporter PDF",
+    pdfFormat: "Format",
+    share: "Partager",
+    shareText: "CAA4all : webapp gratuite pour créer des plans de musée accessibles avec symboles CAA",
   },
   es: {
     appName: "CAA4all",
@@ -218,6 +236,12 @@ const T = {
     catContenuti: "Contenidos",
     catAccessibilita: "Accesibilidad",
     catSicurezza: "Seguridad",
+    snapGrid: "Cuadrícula",
+    gridSize: "Cuadrícula",
+    exportPdf: "Exportar PDF",
+    pdfFormat: "Formato",
+    share: "Compartir",
+    shareText: "CAA4all: webapp gratuita para crear mapas de museo accesibles con símbolos CAA",
   },
   de: {
     appName: "CAA4all",
@@ -266,6 +290,12 @@ const T = {
     catContenuti: "Inhalte",
     catAccessibilita: "Barrierefreiheit",
     catSicurezza: "Sicherheit",
+    snapGrid: "Raster",
+    gridSize: "Raster",
+    exportPdf: "PDF exportieren",
+    pdfFormat: "Format",
+    share: "Teilen",
+    shareText: "CAA4all: Kostenlose Webapp für barrierefreie Museumskarten mit UK-Symbolen",
   },
 };
 
@@ -405,13 +435,75 @@ function PolicyContent({ text }) {
 }
 
 function ProjectContent({ isMobile }) {
-  return PROJECT_TEXT.map((block, i) => {
-    if (block.type === "title") return <h3 key={i} style={{ fontSize: isMobile ? 22 : 26, fontWeight: 700, color: C.text, margin: "0 0 20px", letterSpacing: "-0.01em" }}>{block.text}</h3>;
-    if (block.type === "heading") return <h4 key={i} style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "24px 0 8px" }}>{block.text}</h4>;
-    if (block.type === "download") return <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10 }}><FileDown size={20} style={{ color: C.primary, flexShrink: 0 }}/><div><div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>Scarica i simboli SVG</div><div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>File vettoriali, gratuiti, ridistribuibili</div></div></div>;
-    return <p key={i} style={{ fontSize: 14, color: C.text, lineHeight: 1.8, margin: "0 0 14px" }}>{block.text}</p>;
-  });
+  const siteUrl = "https://caa4all.org";
+  const shareText = "CAA4all: webapp gratuita per creare mappe museali accessibili con simboli CAA";
+  return (
+    <>
+      {PROJECT_TEXT.map((block, i) => {
+        if (block.type === "title") return <h3 key={i} style={{ fontSize: isMobile ? 22 : 26, fontWeight: 700, color: C.text, margin: "0 0 20px", letterSpacing: "-0.01em" }}>{block.text}</h3>;
+        if (block.type === "heading") return <h4 key={i} style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "24px 0 8px" }}>{block.text}</h4>;
+        if (block.type === "download") return <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10 }}><FileDown size={20} style={{ color: C.primary, flexShrink: 0 }}/><div><div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>Scarica i simboli SVG</div><div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>File vettoriali, gratuiti, ridistribuibili</div></div></div>;
+        return <p key={i} style={{ fontSize: 14, color: C.text, lineHeight: 1.8, margin: "0 0 14px" }}>{block.text}</p>;
+      })}
+      {/* Share buttons */}
+      <div style={{ marginTop: 28, paddingTop: 20, borderTop: `1px solid ${C.border}` }}>
+        <h4 style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "0 0 12px" }}>Condividi CAA4all</h4>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#0072B2")} aria-label="Condividi su LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1877F2")} aria-label="Condividi su Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </a>
+          <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1A1A1A")} aria-label="Condividi su X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X
+          </a>
+        </div>
+      </div>
+    </>
+  );
 }
+
+/* === EXPORT MENU === */
+function ExportMenu({ onPNG, onPDF, show, setShow, disabled, exporting, t, isMobile }) {
+  return (
+    <div style={{ position: "relative" }}>
+      <button onClick={() => setShow(!show)} disabled={disabled}
+        style={{ display: "flex", alignItems: "center", gap: 5, padding: isMobile ? "7px 8px" : "7px 12px", borderRadius: 6, border: "none", background: C.secondary, color: C.toolbarBg, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1 }}
+        aria-label={t.exportPng} aria-expanded={show}>
+        <Download size={15}/> {!isMobile && (exporting ? t.exporting : t.exportPng)} <ChevronDown size={12}/>
+      </button>
+      {show && !disabled && (
+        <div style={{ position: "absolute", top: "100%", right: 0, marginTop: 4, background: C.surface, borderRadius: 8, boxShadow: "0 4px 20px rgba(0,0,0,0.15)", border: `1px solid ${C.border}`, zIndex: 1000, minWidth: 160, overflow: "hidden" }}>
+          <button onClick={() => { onPNG(); setShow(false); }} style={exportItemStyle}>
+            <Image size={14}/> PNG (immagine)
+          </button>
+          <button onClick={() => onPDF("A4")} style={exportItemStyle}>
+            <FileText size={14}/> PDF — A4
+          </button>
+          <button onClick={() => onPDF("A3")} style={exportItemStyle}>
+            <FileText size={14}/> PDF — A3
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const exportItemStyle = {
+  display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "10px 14px",
+  border: "none", background: "transparent", color: C.text, fontFamily: "'Lexend', sans-serif",
+  fontSize: 13, fontWeight: 500, cursor: "pointer", textAlign: "left",
+};
+
+const shareBtnStyle = (bg) => ({
+  display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px",
+  borderRadius: 6, background: bg, color: "#fff", fontFamily: "'Lexend', sans-serif",
+  fontSize: 12, fontWeight: 600, textDecoration: "none", cursor: "pointer",
+});
 
 function CookieBanner({ onAccept, isMobile, t }) {
   return (
@@ -477,9 +569,15 @@ export default function CAAMapBuilder() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [modal, setModal] = useState(null);
   const [cookieAccepted, setCookieAccepted] = useState(false);
+  const [snapGrid, setSnapGrid] = useState(false);
+  const [gridSize, setGridSize] = useState(40);
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   const mapFileRef = useRef(null);
   const mapRef = useRef(null);
+
+  /* --- Snap helper --- */
+  const snap = (val) => snapGrid ? Math.round(val / gridSize) * gridSize : val;
 
   /* --- Undo helpers --- */
   const pushUndo = (currentPlaced) => {
@@ -547,7 +645,7 @@ export default function CAAMapBuilder() {
     pushUndo(placed);
     setPlaced(p => {
       if (p.length >= 200) { setError(t.errMaxSymbols); return p; }
-      return [...p, { id: crypto.randomUUID(), src: sym.src, name: sym.name, x: (cx - rect.left) / scale - symSize / 2, y: (cy - rect.top) / scale - symSize / 2, size: symSize, label: "" }];
+      return [...p, { id: crypto.randomUUID(), src: sym.src, name: sym.name, x: snap((cx - rect.left) / scale - symSize / 2), y: snap((cy - rect.top) / scale - symSize / 2), size: symSize, label: "" }];
     });
     if (isMobile) setDrawerOpen(false);
   };
@@ -576,7 +674,7 @@ export default function CAAMapBuilder() {
 
   useEffect(() => {
     if (dragIdx === null) return;
-    const mv = (e) => { const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return; const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY; setPlaced(p => p.map((s, i) => i === dragIdx ? { ...s, x: (cx - rect.left - dragOff.x) / scale, y: (cy - rect.top - dragOff.y) / scale } : s)); };
+    const mv = (e) => { const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return; const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY; setPlaced(p => p.map((s, i) => i === dragIdx ? { ...s, x: snap((cx - rect.left - dragOff.x) / scale), y: snap((cy - rect.top - dragOff.y) / scale) } : s)); };
     const up = () => setDragIdx(null);
     window.addEventListener("mousemove", mv); window.addEventListener("mouseup", up);
     window.addEventListener("touchmove", mv, { passive: false }); window.addEventListener("touchend", up);
@@ -613,6 +711,110 @@ export default function CAAMapBuilder() {
     } catch (err) { setError(t.errExport); }
     setExporting(false);
   }, [mapImage, mapDim, placed, t]);
+
+  /* --- Build canvas helper (shared by PNG and PDF) --- */
+  const buildCanvas = useCallback(async () => {
+    const maxPixels = 16777216;
+    if (mapDim.w * mapDim.h > maxPixels) throw new Error("too_big");
+    const cv = document.createElement("canvas"); cv.width = mapDim.w; cv.height = mapDim.h;
+    const ctx = cv.getContext("2d");
+    if (!ctx) throw new Error("no_canvas");
+    const mi = new window.Image(); await new Promise((r, j) => { mi.onload = r; mi.onerror = j; mi.src = mapImage; }); ctx.drawImage(mi, 0, 0, mapDim.w, mapDim.h);
+    for (const p of placed) {
+      const si = new window.Image(); await new Promise((r, j) => { si.onload = r; si.onerror = j; si.src = p.src; }); ctx.drawImage(si, p.x, p.y, p.size, p.size);
+      if (p.label) {
+        const fontSize = Math.max(12, Math.round(p.size * 0.22));
+        ctx.font = `600 ${fontSize}px 'Lexend', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "rgba(44,41,38,0.85)";
+        const tw = ctx.measureText(p.label).width;
+        const pad = 4; const lx = p.x + p.size / 2; const ly = p.y + p.size + fontSize + 4;
+        ctx.beginPath(); ctx.roundRect(lx - tw/2 - pad, ly - fontSize, tw + pad*2, fontSize + pad, 3); ctx.fill();
+        ctx.fillStyle = "#FFFFFF"; ctx.fillText(p.label, lx, ly - 2);
+      }
+    }
+    return cv;
+  }, [mapImage, mapDim, placed]);
+
+  /* --- PDF export --- */
+  const exportPDF = useCallback(async (format) => {
+    if (!mapImage) return; setExporting(true);
+    try {
+      const cv = await buildCanvas();
+      const jpegUrl = cv.toDataURL("image/jpeg", 0.92);
+      const jpegB64 = jpegUrl.split(",")[1];
+      const jpegBytes = Uint8Array.from(atob(jpegB64), c => c.charCodeAt(0));
+
+      // Page dimensions in PDF points (1 point = 1/72 inch)
+      const pages = { A4: [595.28, 841.89], A3: [841.89, 1190.55] };
+      const [pw, ph] = pages[format] || pages.A4;
+      const margin = 36; // 0.5 inch
+
+      // Fit image in page with margins
+      const maxW = pw - margin * 2; const maxH = ph - margin * 2;
+      const imgAspect = mapDim.w / mapDim.h;
+      let imgW, imgH;
+      if (imgAspect > maxW / maxH) { imgW = maxW; imgH = maxW / imgAspect; }
+      else { imgH = maxH; imgW = maxH * imgAspect; }
+      const imgX = (pw - imgW) / 2;
+      const imgY = (ph - imgH) / 2;
+
+      // Build minimal PDF
+      const enc = new TextEncoder();
+      const parts = [];
+      const offsets = [];
+      let pos = 0;
+      const write = (s) => { const b = enc.encode(s); parts.push(b); pos += b.length; };
+      const writeBytes = (b) => { parts.push(b); pos += b.length; };
+
+      write("%PDF-1.4\n%\xFF\xFF\xFF\xFF\n");
+
+      // Object 1: Catalog
+      offsets[1] = pos;
+      write("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+
+      // Object 2: Pages
+      offsets[2] = pos;
+      write("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+
+      // Object 3: Page
+      offsets[3] = pos;
+      write(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw.toFixed(2)} ${ph.toFixed(2)}] /Contents 4 0 R /Resources << /XObject << /Img 5 0 R >> >> >>\nendobj\n`);
+
+      // Object 4: Content stream (draw image)
+      const contentStr = `q ${imgW.toFixed(2)} 0 0 ${imgH.toFixed(2)} ${imgX.toFixed(2)} ${imgY.toFixed(2)} cm /Img Do Q\n`;
+      offsets[4] = pos;
+      write(`4 0 obj\n<< /Length ${contentStr.length} >>\nstream\n${contentStr}endstream\nendobj\n`);
+
+      // Object 5: Image XObject
+      offsets[5] = pos;
+      write(`5 0 obj\n<< /Type /XObject /Subtype /Image /Width ${mapDim.w} /Height ${mapDim.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`);
+      writeBytes(jpegBytes);
+      write("\nendstream\nendobj\n");
+
+      // Cross-reference table
+      const xrefPos = pos;
+      write("xref\n");
+      write(`0 6\n`);
+      write("0000000000 65535 f \n");
+      for (let i = 1; i <= 5; i++) { write(String(offsets[i]).padStart(10, "0") + " 00000 n \n"); }
+
+      // Trailer
+      write(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF\n`);
+
+      // Create blob and download
+      const blob = new Blob(parts, { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.download = `mappa-caa-museo-${format}.pdf`; a.href = url; a.click();
+      URL.revokeObjectURL(url);
+      cv.width = 0; cv.height = 0;
+    } catch (err) {
+      if (err.message === "too_big") setError(t.errCanvasTooBig);
+      else if (err.message === "no_canvas") setError(t.errCanvasUnsupported);
+      else setError(t.errExport);
+    }
+    setExporting(false); setShowExportMenu(false);
+  }, [mapImage, mapDim, buildCanvas, t]);
 
   const filtered = LIBRARY.map(c => ({ ...c, symbols: c.symbols.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) })).filter(c => c.symbols.length > 0);
   const dW = mapDim.w * scale, dH = mapDim.h * scale;
@@ -695,7 +897,7 @@ export default function CAAMapBuilder() {
           {!isMobile && <HBtn icon={<HelpCircle size={15}/>} label={t.guide} onClick={() => setShowHelp(!showHelp)} ariaLabel={t.guide} />}
           <HBtn icon={<Undo2 size={15}/>} label={isMobile ? "" : t.undo} onClick={doUndo} disabled={undoStack.length === 0} ariaLabel={t.undo} />
           <HBtn icon={<RotateCcw size={15}/>} label={isMobile ? "" : t.reset} onClick={() => { pushUndo(placed); setPlaced([]); setMapImage(null); setError(null); setUndoStack([]); }} ariaLabel={t.reset} />
-          <HBtn icon={<Download size={15}/>} label={isMobile ? "" : (exporting ? t.exporting : t.exportPng)} primary onClick={exportPNG} disabled={!mapImage || exporting} ariaLabel={t.exportPng} />
+          <ExportMenu onPNG={exportPNG} onPDF={exportPDF} show={showExportMenu} setShow={setShowExportMenu} disabled={!mapImage || exporting} exporting={exporting} t={t} isMobile={isMobile} />
         </div>
       </header>
 
@@ -730,6 +932,20 @@ export default function CAAMapBuilder() {
             <span style={{ color: C.textMuted, fontWeight: 500, minWidth: 36, textAlign: "center", flexShrink: 0 }} aria-live="polite">{Math.round(scale * 100)}%</span>
             <button onClick={() => setScale(s => Math.min(s + 0.15, 3))} style={tBtn} disabled={!mapImage} aria-label="Zoom avanti"><ZoomIn size={14}/></button>
             {!isMobile && <button onClick={() => setScale(1)} style={{ ...tBtn, fontSize: 11 }} disabled={!mapImage} aria-label={t.fit}>{t.fit}</button>}
+            <span style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} aria-hidden="true" />
+            <button onClick={() => setSnapGrid(!snapGrid)} disabled={!mapImage} aria-pressed={snapGrid} aria-label={t.snapGrid}
+              style={{ ...tBtn, background: snapGrid ? C.primaryLight : C.surface, border: `1px solid ${snapGrid ? C.primary : C.border}`, color: snapGrid ? C.primary : C.text }}>
+              <Grid3X3 size={14}/> {!isMobile && t.snapGrid}
+            </button>
+            {snapGrid && !isMobile && (
+              <select value={gridSize} onChange={e => setGridSize(+e.target.value)} aria-label={t.gridSize}
+                style={{ padding: "4px 6px", borderRadius: 5, border: `1px solid ${C.border}`, background: C.surface, color: C.text, fontFamily: "'Lexend', sans-serif", fontSize: 11, cursor: "pointer" }}>
+                <option value={20}>20px</option>
+                <option value={40}>40px</option>
+                <option value={60}>60px</option>
+                <option value={80}>80px</option>
+              </select>
+            )}
             <div style={{ flex: 1, minWidth: 8 }} />
             {selected && !isMobile && <div style={{ display: "flex", alignItems: "center", gap: 6, background: C.primaryLight, border: `1px solid ${C.primary}`, borderRadius: 6, padding: "4px 10px", color: C.primary, fontWeight: 500, fontSize: 12, whiteSpace: "nowrap", flexShrink: 0 }} role="status"><MousePointer2 size={13}/> {t.clickToPlace}</div>}
             {placed.length > 0 && <span style={{ color: C.textMuted, whiteSpace: "nowrap", flexShrink: 0 }} aria-live="polite">{placed.length}</span>}
@@ -750,6 +966,17 @@ export default function CAAMapBuilder() {
               <div ref={mapRef} onClick={placeSymbol} aria-label="Mappa del museo" role="application"
                 style={{ position: "relative", width: dW, height: dH, flexShrink: 0, cursor: selected ? "crosshair" : "default", boxShadow: "0 2px 20px rgba(0,0,0,0.12)", borderRadius: 4, overflow: "hidden" }}>
                 <img src={mapImage} alt="Mappa museo" style={{ width: dW, height: dH, display: "block", userSelect: "none", pointerEvents: "none" }} draggable={false} />
+                {/* Grid overlay */}
+                {snapGrid && mapImage && (
+                  <svg style={{ position: "absolute", top: 0, left: 0, width: dW, height: dH, pointerEvents: "none", zIndex: 5 }} aria-hidden="true">
+                    <defs>
+                      <pattern id="snapGridPattern" width={gridSize * scale} height={gridSize * scale} patternUnits="userSpaceOnUse">
+                        <path d={`M ${gridSize * scale} 0 L 0 0 0 ${gridSize * scale}`} fill="none" stroke="rgba(0,114,178,0.2)" strokeWidth="0.5"/>
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#snapGridPattern)"/>
+                  </svg>
+                )}
                 {placed.map((p, i) => (
                   <div key={p.id} onMouseDown={e => startDrag(e, i)} onTouchStart={e => startDrag(e, i)} onMouseEnter={() => setHoverIdx(i)} onMouseLeave={() => setHoverIdx(null)}
                     tabIndex={0} role="button" aria-label={`${p.name}${p.label ? ': ' + p.label : ''}`}
