@@ -80,8 +80,10 @@ const T = {
     pdfFormat: "Formato",
     share: "Condividi",
     shareText: "CAA4all: webapp gratuita per creare mappe museali accessibili con simboli CAA",
+    noMapTitle: "Non hai una mappa pronta?",
+    noMapText: "Se i tuoi file sono tecnici, a bassa risoluzione o graficamente inadeguati, possiamo realizzare un rilievo e una mappa su misura per il tuo museo.",
+    noMapCta: "Richiedi un preventivo",
   },
-  en: {
     appName: "CAA4all",
     appSub: "Accessible museum maps with AAC symbols",
     project: "About",
@@ -134,8 +136,10 @@ const T = {
     pdfFormat: "Format",
     share: "Share",
     shareText: "CAA4all: free webapp to create accessible museum maps with AAC symbols",
+    noMapTitle: "Don't have a map ready?",
+    noMapText: "If your files are technical drawings, low resolution or not suitable for visitors, we can survey your museum and create a custom map.",
+    noMapCta: "Request a quote",
   },
-  fr: {
     appName: "CAA4all",
     appSub: "Plans de musée accessibles avec symboles CAA",
     project: "Le projet",
@@ -188,8 +192,10 @@ const T = {
     pdfFormat: "Format",
     share: "Partager",
     shareText: "CAA4all : webapp gratuite pour créer des plans de musée accessibles avec symboles CAA",
+    noMapTitle: "Vous n'avez pas de plan prêt ?",
+    noMapText: "Si vos fichiers sont des plans techniques, en basse résolution ou inadaptés au public, nous pouvons réaliser un relevé et un plan sur mesure pour votre musée.",
+    noMapCta: "Demander un devis",
   },
-  es: {
     appName: "CAA4all",
     appSub: "Mapas de museo accesibles con símbolos CAA",
     project: "El proyecto",
@@ -242,8 +248,10 @@ const T = {
     pdfFormat: "Formato",
     share: "Compartir",
     shareText: "CAA4all: webapp gratuita para crear mapas de museo accesibles con símbolos CAA",
+    noMapTitle: "¿No tienes un mapa listo?",
+    noMapText: "Si tus archivos son planos técnicos, de baja resolución o inadecuados para los visitantes, podemos realizar un relevamiento y crear un mapa a medida para tu museo.",
+    noMapCta: "Solicitar presupuesto",
   },
-  de: {
     appName: "CAA4all",
     appSub: "Barrierefreie Museumskarten mit UK-Symbolen",
     project: "Das Projekt",
@@ -296,6 +304,9 @@ const T = {
     pdfFormat: "Format",
     share: "Teilen",
     shareText: "CAA4all: Kostenlose Webapp für barrierefreie Museumskarten mit UK-Symbolen",
+    noMapTitle: "Keine Karte vorhanden?",
+    noMapText: "Wenn Ihre Dateien technische Zeichnungen, niedrig aufgelöst oder für Besucher ungeeignet sind, können wir Ihr Museum vermessen und eine passende Karte erstellen.",
+    noMapCta: "Angebot anfordern",
   },
 };
 
@@ -309,11 +320,12 @@ const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
     { id: "ingresso", name: "Ingresso", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M40 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="26" y1="40" x2="48" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
     { id: "uscita", name: "Uscita", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M50 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="36" y1="40" x2="58" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
-    { id: "inizio", name: "Inizio percorso", src: sv("#0072B2",'<circle cx="40" cy="40" r="16" fill="none" stroke="#fff" stroke-width="3"/><polygon points="36,30 52,40 36,50" fill="#fff"/>') },
-    { id: "fine", name: "Fine percorso", src: sv("#0072B2",'<circle cx="40" cy="40" r="16" fill="none" stroke="#fff" stroke-width="3"/><rect x="32" y="32" width="16" height="16" rx="2" fill="#fff"/>') },
-    { id: "scale", name: "Scale", src: sv("#0072B2",'<path d="M20 58h8v-8h8v-8h8v-8h8v-8h8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>') },
-    { id: "ascensore", name: "Ascensore", src: sv("#0072B2",'<rect x="22" y="16" width="36" height="48" rx="4" fill="none" stroke="#fff" stroke-width="3"/><line x1="40" y1="20" x2="40" y2="60" stroke="#fff" stroke-width="2"/><path d="M30 34l-4-6 4-6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 40l4 6-4 6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>') },
-    { id: "tu_sei_qui", name: "Tu sei qui", src: sv("#0072B2",'<circle cx="40" cy="36" r="10" fill="#fff" opacity="0.3"/><circle cx="40" cy="36" r="5" fill="#fff"/><path d="M40 48v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
+    { id: "inizio", name: "Inizio percorso", src: "/simboli/03_inizio-percorso.svg" },
+    { id: "fine", name: "Fine percorso", src: "/simboli/04_fine-percorso.svg" },
+    { id: "direzione", name: "Direzione percorso", src: "/simboli/05_direzione-percorso.svg" },
+    { id: "ascensore", name: "Ascensore", src: "/simboli/06_ascensore.svg" },
+    { id: "scale", name: "Scale", src: "/simboli/07_scale.svg" },
+    { id: "tu_sei_qui", name: "Tu sei qui", src: "/simboli/08_tu-sei-qui.svg" },
   ]},
   { category: "Servizi", color: "#E69F00", shape: "square", symbols: [
     { id: "biglietteria", name: "Biglietteria", src: sv("#E69F00",'<rect x="18" y="24" width="44" height="28" rx="5" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40" cy="38" r="8" fill="none" stroke="#fff" stroke-width="2.5"/><text x="40" y="43" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="sans-serif">€</text>') },
@@ -375,6 +387,8 @@ const PROJECT_TEXT = [
   { type: "heading", text: "File sorgente" },
   { type: "paragraph", text: "Se vuoi modificare un simbolo (cambiare un colore, adattarlo al tuo museo, aggiungere un dettaglio), puoi farlo. I file vettoriali SVG sono scaricabili gratuitamente da questa pagina e ridistribuibili alle stesse condizioni." },
   { type: "download" },
+  { type: "heading", text: "Non hai una mappa pronta?" },
+  { type: "paragraph", text: "Capita spesso: il museo ha solo planimetrie tecniche, file a bassa risoluzione o materiali graficamente inadeguati per il pubblico. Se ti trovi in questa situazione, posso realizzare un rilievo del museo e produrre una mappa su misura, pensata per essere chiara, leggibile e coerente con i simboli CAA. Scrivimi a info@caa4all.org per un preventivo." },
   { type: "heading", text: "Contatti" },
   { type: "paragraph", text: "Se lavori nell'accessibilità museale e hai suggerimenti, correzioni o richieste di nuovi simboli, scrivimi a [email]." },
 ];
@@ -954,13 +968,22 @@ export default function CAAMapBuilder() {
           {/* Map area */}
           <div id="map-area" tabIndex={-1} style={{ flex: 1, overflow: "auto", display: "flex", alignItems: mapImage ? "flex-start" : "center", justifyContent: mapImage ? "flex-start" : "center", padding: mapImage ? (isMobile ? 10 : 20) : 0, background: C.mapBg, WebkitOverflowScrolling: "touch", paddingBottom: isMobile && drawerOpen ? 320 : (isMobile ? 90 : 36) }}>
             {!mapImage ? (
-              <div onClick={() => mapFileRef.current?.click()} role="button" tabIndex={0} aria-label={t.loadMapTitle}
-                onKeyDown={e => e.key === "Enter" && mapFileRef.current?.click()}
-                style={{ width: isMobile ? "90%" : 400, maxWidth: 400, padding: isMobile ? "40px 24px" : "56px 36px", textAlign: "center", borderRadius: 12, border: `2px dashed ${C.border}`, background: C.surface, cursor: "pointer", outline: "none" }}
-                onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
-                <Image size={isMobile ? 36 : 48} strokeWidth={1.2} style={{ color: C.textLight, marginBottom: 14 }} aria-hidden="true" />
-                <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 600, color: C.text, marginBottom: 6 }}>{t.loadMapTitle}</div>
-                <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{t.loadMapSub}</div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20, width: isMobile ? "90%" : "auto", maxWidth: 440 }}>
+                <div onClick={() => mapFileRef.current?.click()} role="button" tabIndex={0} aria-label={t.loadMapTitle}
+                  onKeyDown={e => e.key === "Enter" && mapFileRef.current?.click()}
+                  style={{ width: "100%", padding: isMobile ? "40px 24px" : "56px 36px", textAlign: "center", borderRadius: 12, border: `2px dashed ${C.border}`, background: C.surface, cursor: "pointer", outline: "none" }}
+                  onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
+                  <Image size={isMobile ? 36 : 48} strokeWidth={1.2} style={{ color: C.textLight, marginBottom: 14 }} aria-hidden="true" />
+                  <div style={{ fontSize: isMobile ? 14 : 16, fontWeight: 600, color: C.text, marginBottom: 6 }}>{t.loadMapTitle}</div>
+                  <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{t.loadMapSub}</div>
+                </div>
+                <div style={{ width: "100%", padding: "16px 20px", background: C.surface, borderRadius: 10, border: `1px solid ${C.border}`, textAlign: "center" }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 4 }}>{t.noMapTitle}</div>
+                  <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6, marginBottom: 10 }}>{t.noMapText}</div>
+                  <a href="mailto:info@caa4all.org?subject=Richiesta preventivo mappa museo" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, background: C.primary, color: "#fff", fontFamily: "inherit", fontWeight: 600, fontSize: 12, textDecoration: "none", cursor: "pointer" }}>
+                    {t.noMapCta}
+                  </a>
+                </div>
               </div>
             ) : (
               <div ref={mapRef} onClick={placeSymbol} aria-label="Mappa del museo" role="application"
