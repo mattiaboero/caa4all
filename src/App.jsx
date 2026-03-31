@@ -84,6 +84,7 @@ const T = {
     noMapText: "Se i tuoi file sono tecnici, a bassa risoluzione o graficamente inadeguati, possiamo realizzare un rilievo e una mappa su misura per il tuo museo.",
     noMapCta: "Richiedi un preventivo",
   },
+  en: {
     appName: "CAA4all",
     appSub: "Accessible museum maps with AAC symbols",
     project: "About",
@@ -140,6 +141,7 @@ const T = {
     noMapText: "If your files are technical drawings, low resolution or not suitable for visitors, we can survey your museum and create a custom map.",
     noMapCta: "Request a quote",
   },
+  fr: {
     appName: "CAA4all",
     appSub: "Plans de musée accessibles avec symboles CAA",
     project: "Le projet",
@@ -196,8 +198,8 @@ const T = {
     noMapText: "Si vos fichiers sont des plans techniques, en basse résolution ou inadaptés au public, nous pouvons réaliser un relevé et un plan sur mesure pour votre musée.",
     noMapCta: "Demander un devis",
   },
+  es: {
     appName: "CAA4all",
-    appSub: "Mapas de museo accesibles con símbolos CAA",
     project: "El proyecto",
     guide: "Guía",
     reset: "Reiniciar",
@@ -252,6 +254,7 @@ const T = {
     noMapText: "Si tus archivos son planos técnicos, de baja resolución o inadecuados para los visitantes, podemos realizar un relevamiento y crear un mapa a medida para tu museo.",
     noMapCta: "Solicitar presupuesto",
   },
+  de: {
     appName: "CAA4all",
     appSub: "Barrierefreie Museumskarten mit UK-Symbolen",
     project: "Das Projekt",
