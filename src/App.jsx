@@ -50,6 +50,7 @@ const T = {
     how2: "2. Scegli un simbolo dalla libreria.",
     how3: "3. Tocca/clicca sulla mappa per posizionarlo. Trascinalo per spostarlo.",
     how4: "4. Esporta la mappa come PNG, pronta per la stampa.",
+    how5: "Non hai una mappa pronta? Scrivici a info@caa4all.org: possiamo realizzare la planimetria del tuo museo.",
     howClose: "Ho capito, chiudi",
     errFileSize: "Il file supera 2 MB.",
     errFileType: "Formato non supportato. Usa JPEG o PNG.",
@@ -107,6 +108,7 @@ const T = {
     how2: "2. Choose a symbol from the library.",
     how3: "3. Tap/click the map to place it. Drag to move.",
     how4: "4. Export the map as PNG, ready to print.",
+    how5: "Don't have a map? Write to info@caa4all.org: we can create a floor plan for your museum.",
     howClose: "Got it, close",
     errFileSize: "File exceeds 2 MB.",
     errFileType: "Unsupported format. Use JPEG or PNG.",
@@ -164,6 +166,7 @@ const T = {
     how2: "2. Choisissez un symbole dans la bibliothèque.",
     how3: "3. Cliquez sur le plan pour le placer. Faites-le glisser pour le déplacer.",
     how4: "4. Exportez le plan en PNG, prêt à imprimer.",
+    how5: "Vous n'avez pas de plan ? Écrivez-nous à info@caa4all.org : nous pouvons réaliser le plan de votre musée.",
     howClose: "Compris, fermer",
     errFileSize: "Le fichier dépasse 2 Mo.",
     errFileType: "Format non supporté. Utilisez JPEG ou PNG.",
@@ -220,6 +223,7 @@ const T = {
     how2: "2. Elige un símbolo de la biblioteca.",
     how3: "3. Toca/haz clic en el mapa para colocarlo. Arrástralo para moverlo.",
     how4: "4. Exporta el mapa como PNG, listo para imprimir.",
+    how5: "¿No tienes un mapa? Escríbenos a info@caa4all.org: podemos crear el plano de tu museo.",
     howClose: "Entendido, cerrar",
     errFileSize: "El archivo supera 2 MB.",
     errFileType: "Formato no compatible. Usa JPEG o PNG.",
@@ -277,6 +281,7 @@ const T = {
     how2: "2. Symbol aus der Bibliothek wählen.",
     how3: "3. Auf die Karte tippen/klicken zum Platzieren. Ziehen zum Verschieben.",
     how4: "4. Karte als PNG exportieren, druckfertig.",
+    how5: "Keine Karte vorhanden? Schreiben Sie an info@caa4all.org: Wir können einen Grundriss für Ihr Museum erstellen.",
     howClose: "Verstanden, schließen",
     errFileSize: "Die Datei überschreitet 2 MB.",
     errFileType: "Format nicht unterstützt. JPEG oder PNG verwenden.",
@@ -922,6 +927,7 @@ export default function CAAMapBuilder() {
         <div role="region" aria-label={t.howTitle} style={{ background: C.primaryLight, borderBottom: `1px solid ${C.primary}`, padding: "12px 16px", fontSize: 13, color: C.text, lineHeight: 1.7, flexShrink: 0 }}>
           <strong>{t.howTitle}</strong><br/>
           {t.how1}<br/>{t.how2}<br/>{t.how3}<br/>{t.how4}
+          <div style={{ marginTop: 8, padding: "8px 0", fontSize: 12, color: C.primary, fontWeight: 500 }}>{t.how5}</div>
           <div style={{ marginTop: 6 }}><button onClick={() => setShowHelp(false)} style={{ background: "none", border: "none", color: C.primary, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>{t.howClose}</button></div>
         </div>
       )}
