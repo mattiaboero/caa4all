@@ -326,7 +326,7 @@ const sv = (bg, inner) =>
 
 const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
-    { id: "ingresso", name: "Ingresso", src: "/simboli/01_entrata.svg" },
+    { id: "ingresso", name: "Ingresso", src: "/simboli/01_ingresso.svg" },
     { id: "uscita", name: "Uscita", src: "/simboli/02_uscita.svg" },
     { id: "inizio", name: "Inizio percorso", src: "/simboli/03_inizio-percorso.svg" },
     { id: "fine", name: "Fine percorso", src: "/simboli/04_fine-percorso.svg" },
