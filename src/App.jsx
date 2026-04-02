@@ -326,8 +326,8 @@ const sv = (bg, inner) =>
 
 const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
-    { id: "ingresso", name: "Ingresso", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M40 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="26" y1="40" x2="48" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
-    { id: "uscita", name: "Uscita", src: sv("#0072B2",'<path d="M30 20h20v40H30z" fill="none" stroke="#fff" stroke-width="3"/><path d="M50 32l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><line x1="36" y1="40" x2="58" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/>') },
+    { id: "ingresso", name: "Ingresso", src: "/simboli/01_entrata.svg" },
+    { id: "uscita", name: "Uscita", src: "/simboli/02_uscita.svg" },
     { id: "inizio", name: "Inizio percorso", src: "/simboli/03_inizio-percorso.svg" },
     { id: "fine", name: "Fine percorso", src: "/simboli/04_fine-percorso.svg" },
     { id: "direzione", name: "Direzione percorso", src: "/simboli/05_direzione-percorso.svg" },
