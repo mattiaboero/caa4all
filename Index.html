@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CAA4all — Mappe museali accessibili con simboli CAA</title>
+  <meta name="description" content="Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa. Carica la planimetria del tuo museo, posiziona i simboli, esporta e stampa. Simboli gratuiti disegnati da Mattia Boero.">
+  <meta name="keywords" content="CAA, comunicazione aumentativa alternativa, mappe museali, accessibilità museale, simboli CAA, museo accessibile, mappa tattile, inclusione, disabilità comunicativa, AAC, museum accessibility">
+  <meta name="author" content="Mattia Boero">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://caa4all.org/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CAA4all — Mappe museali accessibili con simboli CAA">
+  <meta property="og:description" content="Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa. Simboli gratuiti, modificabili e ridistribuibili.">
+  <meta property="og:url" content="https://caa4all.org/">
+  <meta property="og:site_name" content="CAA4all">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:image" content="https://caa4all.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CAA4all: webapp per mappe museali accessibili con simboli CAA">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CAA4all — Mappe museali accessibili con simboli CAA">
+  <meta name="twitter:description" content="Webapp gratuita per creare mappe museali accessibili con simboli CAA.">
+  <meta name="twitter:image" content="https://caa4all.org/og-image.png">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="theme-color" content="#2C2926">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CAA4all",
+    "url": "https://caa4all.org",
+    "description": "Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa.",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web browser",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "author": { "@type": "Person", "name": "Mattia Boero" },
+    "inLanguage": "it",
+    "isAccessibleForFree": true
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F3F0;
+      --surface: #FFFFFF;
+      --border: #CCC8C0;
+      --text: #1A1A1A;
+      --text-muted: #6B6560;
+      --text-light: #9B9590;
+      --primary: #0072B2;
+      --primary-light: #E3F0F8;
+      --secondary: #E69F00;
+      --accent: #009E73;
+      --toolbar-bg: #2C2926;
+      --toolbar-text: #F5F3F0;
+    }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: var(--toolbar-bg);
+      color: var(--toolbar-text);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 12px;
+      opacity: 0.7;
+      font-weight: 300;
+      margin-top: 2px;
+    }
+
+    /* Main */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    /* Progress section */
+    .progress-section {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .progress-sublabel {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .progress-bar-outer {
+      width: 100%;
+      height: 12px;
+      background: var(--bg);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar-inner {
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 6px;
+      transition: width 1.5s ease;
+    }
+
+    .progress-percent {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .progress-status {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Content sections */
+    .content-section {
+      margin-bottom: 24px;
+    }
+
+    .content-section h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .content-section p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .content-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      font-size: 13px;
+      color: var(--text);
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .check-done {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .check-done svg { width: 12px; height: 12px; }
+
+    .check-wip {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .check-todo {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    /* Contact */
+    .contact-box {
+      background: var(--primary-light);
+      border-radius: 10px;
+      padding: 20px 24px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .contact-box p {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .contact-box a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 7px;
+      background: var(--primary);
+      color: #fff;
+      font-family: 'Lexend', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    /* Footer */
+    footer {
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 2px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header { padding: 12px 16px; }
+      .header-text h1 { font-size: 16px; }
+      .header-text p { display: none; }
+      main { padding: 24px 16px; }
+      .progress-section { padding: 24px 20px; }
+      .progress-percent { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo" aria-hidden="true">4all</div>
+    <div class="header-text">
+      <h1>CAA4all</h1>
+      <p>Mappe museali accessibili con simboli CAA</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Progress -->
+      <div class="progress-section">
+        <div class="progress-label">Stiamo lavorando all'app</div>
+        <div class="progress-sublabel">Avanzamento del progetto</div>
+        <div class="progress-bar-outer" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Avanzamento progetto: 60%">
+          <div class="progress-bar-inner"></div>
+        </div>
+        <div class="progress-percent">60%</div>
+        <div class="progress-status">Simboli e funzionalità in fase di completamento</div>
+      </div>
+
+      <!-- What -->
+      <div class="content-section">
+        <h2>Cos'è CAA4all</h2>
+        <p>Una webapp gratuita per creare mappe museali accessibili. Carichi la planimetria del tuo museo, ci posizioni sopra i simboli della Comunicazione Aumentativa Alternativa dalla libreria, e scarichi il risultato come immagine pronta per la stampa. Nessun login, nessun costo.</p>
+      </div>
+
+      <!-- Symbols -->
+      <div class="content-section">
+        <h2>I simboli</h2>
+        <p>Li ho disegnati io, Mattia Boero. Ogni simbolo rappresenta l'azione che il visitatore compie in quel punto, non la convenzione grafica a cui siamo abituati. Il bagno è le mani sotto l'acqua e il water, non la sagoma uomo/donna. Nella CAA conta l'azione.</p>
+        <p>I colori usano la palette Okabe-Ito, progettata per essere distinguibile anche da persone daltoniche. I simboli sono gratuiti, modificabili e ridistribuibili senza vincoli.</p>
+      </div>
+
+      <!-- Status checklist -->
+      <div class="content-section">
+        <h2>A che punto siamo</h2>
+        <ul class="checklist">
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Struttura dell'app (React, Vite, Cloudflare Pages)
+          </li>
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Interfaccia multilingua (IT, EN, FR, ES, DE)
+          </li>
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Accessibilità: tastiera, screen reader, daltonismo
+          </li>
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Esportazione PNG e PDF (A4 / A3)
+          </li>
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Griglia magnetica e etichette simboli
+          </li>
+          <li>
+            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Privacy e cookie policy GDPR
+          </li>
+          <li>
+            <span class="check-wip"><svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px"><circle cx="6" cy="6" r="2.5" fill="#fff"/></svg></span>
+            Disegno simboli CAA (in corso)
+          </li>
+          <li>
+            <span class="check-todo"></span>
+            Immagini per anteprime social e favicon
+          </li>
+          <li>
+            <span class="check-todo"></span>
+            File SVG scaricabili
+          </li>
+        </ul>
+      </div>
+
+      <!-- No map -->
+      <div class="content-section">
+        <h3>Non hai una mappa pronta?</h3>
+        <p>Se i tuoi file sono planimetrie tecniche, a bassa risoluzione o graficamente inadeguati per il pubblico, possiamo realizzare un rilievo e una mappa su misura per il tuo museo.</p>
+      </div>
+
+      <!-- Contact -->
+      <div class="contact-box">
+        <p>Se lavori nell'accessibilità museale, hai suggerimenti, o vuoi richiedere un preventivo per la planimetria del tuo museo, scrivimi.</p>
+        <a href="/cdn-cgi/l/email-protection#9ff6f1f9f0dffcfefeabfef3f3b1f0edf8a0eceafdf5fafceba2dcdedeabfef3f3" class="btn">Scrivimi a <span class="__cf_email__" data-cfemail="82ebece4edc2e1e3e3b6e3eeeeacedf0e5">[email&#160;protected]</span></a>
+ 

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO: Titolo e descrizione -->
+  <title>CAA4all — Mappe museali accessibili con simboli CAA</title>
+  <meta name="description" content="Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa. Carica la planimetria del tuo museo, posiziona i simboli, esporta e stampa. Simboli gratuiti disegnati da Mattia Boero." />
+
+  <!-- SEO: Parole chiave (peso marginale su Google, utile per altri motori) -->
+  <meta name="keywords" content="CAA, comunicazione aumentativa alternativa, mappe museali, accessibilità museale, simboli CAA, museo accessibile, mappa tattile, inclusione, disabilità comunicativa, AAC, museum accessibility" />
+
+  <!-- SEO: Autore -->
+  <meta name="author" content="Mattia Boero" />
+
+  <!-- SEO: Robots -->
+  <meta name="robots" content="index, follow" />
+
+  <!-- SEO: Canonical URL (sostituisci con il tuo dominio reale) -->
+  <link rel="canonical" href="https://caa4all.org/" />
+
+  <!-- SEO: Lingua e area geografica -->
+  <meta name="language" content="Italian" />
+  <meta name="geo.region" content="IT-TO" />
+  <meta name="geo.placename" content="Torino" />
+
+  <!-- ===== OPEN GRAPH (Facebook, LinkedIn, WhatsApp, Telegram) ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CAA4all — Mappe museali accessibili con simboli CAA" />
+  <meta property="og:description" content="Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa. Simboli gratuiti, modificabili e ridistribuibili." />
+  <meta property="og:url" content="https://caa4all.org/" />
+  <meta property="og:site_name" content="CAA4all" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:image" content="https://caa4all.org/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="CAA4all: webapp per mappe museali accessibili con simboli CAA" />
+
+  <!-- ===== TWITTER / X CARD ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CAA4all — Mappe museali accessibili con simboli CAA" />
+  <meta name="twitter:description" content="Webapp gratuita per creare mappe museali accessibili con simboli CAA. Carica la mappa, posiziona i simboli, esporta e stampa." />
+  <meta name="twitter:image" content="https://caa4all.org/og-image.png" />
+  <meta name="twitter:image:alt" content="CAA4all: webapp per mappe museali accessibili con simboli CAA" />
+
+  <!-- ===== FAVICON ===== -->
+  <!-- Sostituisci con i tuoi file favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ===== WEB APP MANIFEST (per aggiunta a home screen mobile) ===== -->
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#2C2926" />
+
+  <!-- ===== STRUCTURED DATA JSON-LD ===== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CAA4all",
+    "url": "https://caa4all.org",
+    "description": "Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa.",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Mattia Boero",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Torino",
+        "addressCountry": "IT"
+      }
+    },
+    "inLanguage": "it",
+    "isAccessibleForFree": true,
+    "accessibilityFeature": [
+      "highContrastDisplay",
+      "largePrint",
+      "alternativeText"
+    ],
+    "accessibilityHazard": "none",
+    "keywords": "CAA, comunicazione aumentativa alternativa, accessibilità museale, simboli, mappe museali"
+  }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
