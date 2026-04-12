@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Inizio percorso mostra">
-  <rect width="80" height="80" rx="14" fill="#0072B2"/>
-  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
-  <path d="M16 64V14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-  <path d="M16 16h26l-6 7 6 7H16z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
-  <circle cx="20" cy="60" r="3.8" fill="#fff"/>
-  <path d="M24 59c9 0 12-11 23-11h11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="2.5 4"/>
-  <path d="M52 40l8 8-8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 80 80">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke-width: 2.6px;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5 {
+        display: none;
+      }
+
+      .st0, .st2, .st6, .st3, .st4, .st5 {
+        fill: none;
+      }
+
+      .st0, .st2, .st3, .st4, .st5 {
+        stroke: #fff;
+        stroke-linecap: round;
+      }
+
+      .st1, .st7 {
+        fill: #fff;
+      }
+
+      .st2, .st4 {
+        stroke-width: 3.4px;
+      }
+
+      .st6 {
+        stroke: #06b3ff;
+        stroke-miterlimit: 10;
+      }
+
+      .st8 {
+        fill: #0072b2;
+      }
+
+      .st3 {
+        stroke-width: 2.8px;
+      }
+
+      .st3, .st4, .st5 {
+        stroke-linejoin: round;
+      }
+
+      .st5 {
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <rect class="st8" width="80" height="80" rx="14" ry="14"/>
+  <rect class="st6" x="6" y="6" width="68" height="68" rx="10" ry="10"/>
+  <path class="st5" d="M27.1,14h10v52h-10"/>
+  <path class="st0" d="M23,49l-6,6M23,49l6,6"/>
+  <circle class="st1" cx="23" cy="32.9" r="4.1"/>
+  <path class="st3" d="M23,38v10M23,38l7,4M23,38l-5,6"/>
+  <path class="st2" d="M42.4,42h14"/>
+  <path class="st4" d="M50.4,34l10,8-10,8"/>
+  <g>
+    <path class="st7" d="M49.3,59.3v-14.7h9.2l-3.1,3.1c-.5.5-.5,1.4,0,1.9s1.4.5,1.9,0l5.4-5.4h0s0,0,.1-.1c0,0,0,0,0,0,0,0,.1-.2.2-.3h0c0,0,0-.1,0-.2h0c0,0,0-.1,0-.2h0v-.2h0c0,0,0-.1,0-.2h0c0,0,0-.2,0-.2h0s0,0,0,0c0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0h0l-5.5-5.5c-.5-.5-1.4-.5-1.9,0s-.4.6-.4,1,.1.7.4,1l3.2,3.2h-10.5c-.8,0-1.4.6-1.4,1.4v14.7h-10.5v-30.4c0-.8-.6-1.4-1.4-1.4h-16.2c-.8,0-1.4.6-1.4,1.4s.6,1.4,1.4,1.4h14.8v30.4c0,.8.6,1.4,1.4,1.4h13.3c.8,0,1.4-.6,1.4-1.4h0Z"/>
+    <rect class="st7" x="16.8" y="19.3" width="5.5" height="16.4" rx="1.2" ry="1.2"/>
+  </g>
 </svg>

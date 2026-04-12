@@ -63,10 +63,7 @@
   <path class="st2" d="M42.4,42h14"/>
   <path class="st6" d="M50.4,34l10,8-10,8"/>
   <g>
-    <path class="st0" d="M40,12v18M40,50v18M12,40h18M50,40h18"/>
-    <path class="st3" d="M34,18l6-6,6,6"/>
-    <path class="st3" d="M34,62l6,6,6-6"/>
-    <path class="st3" d="M18,34l-6,6,6,6"/>
+    <path class="st0" d="M50,40h18"/>
     <path class="st3" d="M62,34l6,6-6,6"/>
     <circle class="st9" cx="40" cy="40" r="4"/>
   </g>

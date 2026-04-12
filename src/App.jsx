@@ -472,7 +472,6 @@ const LIBRARY = [
   { category: "Sicurezza", color: "#D55E00", shape: "hexagon", symbols: [
     { id: "emergenza", name: "Uscita di emergenza", src: "/simboli/41_uscita-emergenza.svg" },
     { id: "punto_raccolta", name: "Punto di raccolta", src: "/simboli/42_punto-raccolta.svg" },
-    { id: "estintore", name: "Estintore", src: "/simboli/43_estintore.svg" },
     { id: "dae", name: "Defibrillatore", src: "/simboli/44_defibrillatore.svg" },
   ]},
 ];

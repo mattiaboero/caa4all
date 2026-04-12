@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="CAA">
-  <rect width="80" height="80" rx="14" fill="#009E73"/>
-  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
-  <path d="M16 24h28a6 6 0 016 6v10a6 6 0 01-6 6H30l-8 6v-6h-6a6 6 0 01-6-6V30a6 6 0 016-6z" fill="none" stroke="#fff" stroke-width="3"/>
-  <text x="40" y="38" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Arial, sans-serif">CAA</text>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 80 80">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+        font-family: Lexend-Bold, Lexend;
+        font-size: 16.6px;
+        font-weight: 700;
+        isolation: isolate;
+      }
+
+      .st1 {
+        fill: #009e73;
+      }
+
+      .st2 {
+        stroke: #fff;
+        stroke-width: 4px;
+      }
+
+      .st2, .st3 {
+        fill: none;
+      }
+
+      .st3 {
+        stroke: #7dffd7;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <rect class="st1" width="80" height="80" rx="14" ry="14"/>
+  <rect class="st3" x="6" y="6" width="68" height="68" rx="10" ry="10"/>
+  <g>
+    <text class="st0" transform="translate(23.7 42.2)"><tspan x="0" y="0">CAA</tspan></text>
+    <path class="st2" d="M21.8,20.7h36.5c4.3,0,7.8,3.7,7.8,8.3v13.8c0,4.6-3.5,8.3-7.8,8.3h-18.2l-10.4,8.3v-8.3h-7.8c-4.3,0-7.8-3.7-7.8-8.3v-13.8c0-4.6,3.5-8.3,7.8-8.3Z"/>
+  </g>
 </svg>
