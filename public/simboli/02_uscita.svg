@@ -2,8 +2,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Uscita">
   <rect width="80" height="80" rx="14" fill="#0072B2"/>
   <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
-  <rect x="18" y="14" width="13" height="52" rx="2" fill="none" stroke="#fff" stroke-width="3"/>
-  <path d="M66 40H38" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
-  <path d="M47 30L35 40l12 10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="27" cy="40" r="2" fill="#fff"/>
+  <path d="M18 14h10v52H18" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M60 26l6 6m-6-6l-6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="54" cy="34" r="3" fill="#fff"/>
+  <path d="M54 38v10M54 43l-7 4M54 43l5 6" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 42H32" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M38 34l-10 8 10 8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="25.5" cy="40" r="1.8" fill="#fff"/>
 </svg>
