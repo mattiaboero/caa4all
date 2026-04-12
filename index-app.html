@@ -57,10 +57,24 @@
 
   <script>
     (function () {
-      const PRIVATE_PATH = "/mb-lab-80462eb1b766764532da";
+      const ACCESS_PARAM = "k";
+      const ACCESS_KEY = "caa4all-app-access";
+      const SECRET = "mb-6cde86cc5eeeeba49896f34c";
       const landingUrl = "/";
-      const normalize = (path) => (path.length > 1 ? path.replace(/\/+$/, "") : path);
-      if (normalize(window.location.pathname) !== normalize(PRIVATE_PATH)) {
+
+      const hash = window.location.hash.startsWith("#") ? window.location.hash.slice(1) : "";
+      const hashParams = new URLSearchParams(hash);
+      const provided = hashParams.get(ACCESS_PARAM);
+      const stored = window.localStorage.getItem(ACCESS_KEY);
+      const isValid = (value) => typeof value === "string" && value === SECRET;
+
+      if (isValid(provided)) {
+        window.localStorage.setItem(ACCESS_KEY, provided);
+        window.history.replaceState({}, "", window.location.pathname + window.location.search);
+        return;
+      }
+
+      if (!isValid(stored)) {
         window.location.replace(landingUrl);
       }
     })();
