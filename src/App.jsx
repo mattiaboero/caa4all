@@ -434,7 +434,15 @@ const CAT_KEYS = { "Orientamento": "catOrientamento", "Servizi": "catServizi", "
 /* === SYMBOL LIBRARY === */
 const SYMBOL_VERSION = "20260413-1";
 const sym = (path) => `${path}?v=${SYMBOL_VERSION}`;
-const LOGO_VERSION = "20260413-2";
+const LOGO_VERSION = "20260413-3";
+const DIRECTION_TRIGGER_ID = "direzione";
+const DIRECTION_VARIANTS = [
+  { id: "direzione_dx", name: "Direzione percorso di mostra (destra)", label: "Destra", src: sym("/simboli/05_direzione-percorso-mostra-dx.svg") },
+  { id: "direzione_giu", name: "Direzione percorso di mostra (giù)", label: "Giù", src: sym("/simboli/05_direzione-percorso-mostra-giu.svg") },
+  { id: "direzione_su", name: "Direzione percorso di mostra (su)", label: "Su", src: sym("/simboli/05_direzione-percorso-mostra-su.svg") },
+  { id: "direzione_sx", name: "Direzione percorso di mostra (sinistra)", label: "Sinistra", src: sym("/simboli/05_direzione-percorso-mostra-sx.svg") },
+];
+const EXTRA_SYMBOLS = DIRECTION_VARIANTS;
 
 const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
@@ -712,6 +720,7 @@ export default function CAAMapBuilder() {
   const [snapGrid, setSnapGrid] = useState(false);
   const [gridSize, setGridSize] = useState(40);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [openDirectionChoices, setOpenDirectionChoices] = useState(false);
 
   const mapFileRef = useRef(null);
   const mapRef = useRef(null);
@@ -779,7 +788,7 @@ export default function CAAMapBuilder() {
   const placeSymbol = (e) => {
     if (!selected || !mapImage || dragIdx !== null) return;
     const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return;
-    const sym = LIBRARY.flatMap(c => c.symbols).find(s => s.id === selected); if (!sym) return;
+    const sym = LIBRARY.flatMap(c => c.symbols).find(s => s.id === selected) || EXTRA_SYMBOLS.find(s => s.id === selected); if (!sym) return;
     const cx = e.touches ? e.touches[0].clientX : e.clientX;
     const cy = e.touches ? e.touches[0].clientY : e.clientY;
     pushUndo(placed);
@@ -997,15 +1006,47 @@ export default function CAAMapBuilder() {
             </button>
             {openCats[cat.category] && (
               <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(auto-fill, minmax(70px, 1fr))" : "1fr 1fr 1fr", gap: 4, padding: "0 8px 8px" }} role="grid">
-                {cat.symbols.map(sym => (
-                  <button key={sym.id} onClick={() => setSelected(selected === sym.id ? null : sym.id)} title={sym.name} role="gridcell"
-                    aria-pressed={selected === sym.id} aria-label={sym.name}
-                    style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
-                    onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
-                    <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
-                    <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: selected === sym.id ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
-                  </button>
-                ))}
+                {cat.symbols.flatMap(sym => {
+                  const isDirectionTrigger = sym.id === DIRECTION_TRIGGER_ID;
+                  if (!isDirectionTrigger) {
+                    return (
+                      <button key={sym.id} onClick={() => { setSelected(selected === sym.id ? null : sym.id); setOpenDirectionChoices(false); }} title={sym.name} role="gridcell"
+                        aria-pressed={selected === sym.id} aria-label={sym.name}
+                        style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
+                        onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
+                        <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
+                        <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: selected === sym.id ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
+                      </button>
+                    );
+                  }
+
+                  const isDirectionSelected = DIRECTION_VARIANTS.some(variant => variant.id === selected);
+                  const triggerActive = openDirectionChoices || isDirectionSelected;
+                  const triggerButton = (
+                    <button key={sym.id} onClick={() => { setOpenDirectionChoices(prev => !prev); setSelected(null); }} title={sym.name} role="gridcell"
+                      aria-pressed={triggerActive} aria-expanded={openDirectionChoices} aria-label={sym.name}
+                      style={{ background: triggerActive ? C.primaryLight : C.bg, border: `2px solid ${triggerActive ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
+                      onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
+                      <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
+                      <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: triggerActive ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
+                      <span style={{ fontSize: 10, color: C.textLight, lineHeight: 1 }} aria-hidden="true">{openDirectionChoices ? "▾" : "▸"}</span>
+                    </button>
+                  );
+
+                  if (!openDirectionChoices) return triggerButton;
+
+                  const variantButtons = DIRECTION_VARIANTS.map(variant => (
+                    <button key={variant.id} onClick={() => setSelected(selected === variant.id ? null : variant.id)} title={variant.name} role="gridcell"
+                      aria-pressed={selected === variant.id} aria-label={variant.name}
+                      style={{ background: selected === variant.id ? C.primaryLight : C.bg, border: `2px solid ${selected === variant.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
+                      onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
+                      <img src={variant.src} alt={variant.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
+                      <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: selected === variant.id ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{variant.label}</span>
+                    </button>
+                  ));
+
+                  return [triggerButton, ...variantButtons];
+                })}
               </div>
             )}
           </div>
