@@ -17,6 +17,9 @@
 /simboli/*
   Cache-Control: public, max-age=0, must-revalidate
 
+/logo-caa4all.svg
+  Cache-Control: public, max-age=0, must-revalidate
+
 /simboli-caa4all.zip
   Cache-Control: public, max-age=0, must-revalidate
 

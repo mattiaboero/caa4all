@@ -434,7 +434,7 @@ const CAT_KEYS = { "Orientamento": "catOrientamento", "Servizi": "catServizi", "
 /* === SYMBOL LIBRARY === */
 const SYMBOL_VERSION = "20260413-1";
 const sym = (path) => `${path}?v=${SYMBOL_VERSION}`;
-const LOGO_VERSION = "20260413-1";
+const LOGO_VERSION = "20260413-2";
 
 const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
