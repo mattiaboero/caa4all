@@ -15,7 +15,7 @@
   <meta name="author" content="Mattia Boero" />
 
   <!-- SEO: Robots -->
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
 
   <!-- SEO: Canonical URL (sostituisci con il tuo dominio reale) -->
   <link rel="canonical" href="https://caa4all.org/" />
@@ -54,6 +54,33 @@
   <!-- ===== WEB APP MANIFEST (per aggiunta a home screen mobile) ===== -->
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#2C2926" />
+
+  <script>
+    (function () {
+      const ACCESS_PARAM = "access";
+      const ACCESS_KEY = "caa4all-app-access";
+      const SECRET = "caa4all-14affa9773689e9ee9b5bfa6";
+      const landingUrl = "/";
+
+      const params = new URLSearchParams(window.location.search);
+      const provided = params.get(ACCESS_PARAM);
+      const stored = window.localStorage.getItem(ACCESS_KEY);
+      const isValid = (value) => typeof value === "string" && value === SECRET;
+
+      if (isValid(provided)) {
+        window.localStorage.setItem(ACCESS_KEY, provided);
+        params.delete(ACCESS_PARAM);
+        const nextQuery = params.toString();
+        const cleanUrl = window.location.pathname + (nextQuery ? "?" + nextQuery : "") + window.location.hash;
+        window.history.replaceState({}, "", cleanUrl);
+        return;
+      }
+
+      if (!isValid(stored)) {
+        window.location.replace(landingUrl);
+      }
+    })();
+  </script>
 
   <!-- ===== STRUCTURED DATA JSON-LD ===== -->
   <script type="application/ld+json">

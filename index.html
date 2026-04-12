@@ -38,15 +38,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("landing") !== "1") {
-        window.location.replace("/app");
-      }
-    })();
-  </script>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -357,8 +348,8 @@
         <div class="progress-status">Funzioni principali disponibili: caricamento mappa, simboli CAA, esportazione PNG/PDF, etichette, griglia.</div>
 
         <div class="cta-row">
-          <a class="btn btn-primary" href="/app">Apri l'editor CAA4all</a>
-          <a class="btn btn-secondary" href="/simboli-caa4all.zip" download>Scarica simboli SVG</a>
+          <a class="btn btn-primary" href="/simboli-caa4all.zip" download>Scarica simboli SVG</a>
+          <a class="btn btn-secondary" href="mailto:info@caa4all.org?subject=Aggiornamenti%20CAA4all">Contattami per aggiornamenti</a>
         </div>
       </div>
 
@@ -400,7 +391,7 @@
   </main>
 
   <footer>
-    © <span id="year"></span> CAA4all · <a href="/app">Apri editor</a> · <a href="/index-app.html">Versione app diretta</a>
+    © <span id="year"></span> CAA4all · Progetto in aggiornamento continuo
   </footer>
 
   <script>
