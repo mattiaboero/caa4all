@@ -14,5 +14,11 @@
 /*.svg
   Cache-Control: public, max-age=2592000
 
+/simboli/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/simboli-caa4all.zip
+  Cache-Control: public, max-age=0, must-revalidate
+
 /og-image.png
   Cache-Control: public, max-age=2592000
