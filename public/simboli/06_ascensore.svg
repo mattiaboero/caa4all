@@ -1,1 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g id="_01_Inizio_percorso"><g id="Icona_Bianco"><rect x="12" y="12" width="488.1" height="488.1" rx="73.4" ry="73.4" fill="#fff"/></g></g><g id="_04_Ascensore"><g id="Bordo_Orientamento"><path d="M435,20c31.4,0,57,25.6,57,57v358c0,31.4-25.6,57-57,57H77c-31.4,0-57-25.6-57-57V77c0-31.4,25.6-57,57-57h358M435,0H77C34.5,0,0,34.5,0,77v358c0,42.5,34.5,77,77,77h358c42.5,0,77-34.5,77-77V77c0-42.5-34.5-77-77-77h0Z" fill="#0072b2"/></g><rect x="135.1" y="181.7" width="241.8" height="241.8" fill="#e5e5e5" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="13.5"/><path d="M235.4,137.6c-2-1.9-5.1-1.9-7.1,0l-12.3,12.5v-68.6c0-2.8-2.2-5-5-5s-5,2.2-5,5v68.6l-12.3-12.5c-1.9-2-5.1-2-7.1,0-2,1.9-2,5.1,0,7.1l20.9,21.2s0,0,.1,0c.2.2.3.3.5.4,0,0,.1.1.2.2.2.1.5.3.7.4,0,0,0,0,0,0,0,0,0,0,0,0,.2,0,.3.1.5.2.1,0,.3,0,.4.1.3,0,.6,0,1,0s0,0,0,0,0,0,0,0c.3,0,.6,0,1,0,.1,0,.3,0,.4-.1.2,0,.3,0,.5-.1,0,0,0,0,0,0,0,0,0,0,0,0,.3-.1.5-.2.7-.4,0,0,.1,0,.2-.2.2-.1.4-.3.5-.4,0,0,0,0,.1,0l20.9-21.2c1.9-2,1.9-5.1,0-7.1Z"/><path d="M276.6,107.2c2,1.9,5.1,1.9,7.1,0l12.3-12.5v68.6c0,2.8,2.2,5,5,5s5-2.2,5-5v-68.6l12.3,12.5c1.9,2,5.1,2,7.1,0,2-1.9,2-5.1,0-7.1l-20.9-21.2s0,0-.1,0c-.2-.2-.3-.3-.5-.4,0,0-.1-.1-.2-.2-.2-.1-.5-.3-.7-.4,0,0,0,0,0,0,0,0,0,0,0,0-.2,0-.3-.1-.5-.2-.1,0-.3,0-.4-.1-.3,0-.6,0-1,0s0,0,0,0,0,0,0,0c-.3,0-.6,0-1,0-.1,0-.3,0-.4.1-.2,0-.3,0-.5.1,0,0,0,0,0,0,0,0,0,0,0,0-.3.1-.5.2-.7.4,0,0-.1,0-.2.2-.2.1-.4.3-.5.4,0,0,0,0-.1,0l-20.9,21.2c-1.9,2-1.9,5.1,0,7.1Z"/><line x1="108.5" y1="430.9" x2="108.5" y2="110.2" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="13.5"/><line x1="404" y1="430.9" x2="404" y2="110.2" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="13.5"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
+  <rect width="80" height="80" rx="12" fill="#0072B2"/>
+  <rect x="18" y="20" width="44" height="42" rx="4" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M40 13l-6 8h12z" fill="#fff"/>
+  <path d="M40 67l-6-8h12z" fill="#fff"/>
+  <circle cx="30" cy="36" r="3" fill="#fff"/>
+  <path d="M30 39v10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="50" cy="36" r="3" fill="#fff"/>
+  <path d="M50 39v10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+</svg>
