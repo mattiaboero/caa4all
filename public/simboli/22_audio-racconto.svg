@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
-  <rect width="80" height="80" rx="12" fill="#56B4E9"/>
-  <circle cx="36" cy="28" r="8" fill="none" stroke="#fff" stroke-width="3"/>
-  <path d="M36 36v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-  <rect x="28" y="48" width="16" height="8" rx="3" fill="#fff"/>
-  <path d="M50 22a14 14 0 010 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M56 18a20 20 0 010 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Audio racconto">
+  <rect width="80" height="80" rx="14" fill="#56B4E9"/>
+  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
+  <path d="M24 39a16 16 0 0132 0" fill="none" stroke="#fff" stroke-width="3"/>
+  <rect x="22" y="38" width="7" height="15" rx="3" fill="#fff"/>
+  <rect x="51" y="38" width="7" height="15" rx="3" fill="#fff"/>
+  <path d="M34 50h12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M60 30c4 3 4 13 0 16" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
 </svg>

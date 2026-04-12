@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
-  <rect width="80" height="80" rx="12" fill="#D55E00"/>
-  <rect x="30" y="24" width="20" height="34" rx="6" fill="none" stroke="#fff" stroke-width="3"/>
-  <path d="M38 24v-6h8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="40" y1="36" x2="40" y2="48" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Estintore">
+  <rect width="80" height="80" rx="14" fill="#D55E00"/>
+  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
+  <rect x="30" y="22" width="20" height="34" rx="6" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M38 22v-6h10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="44" cy="38" r="2" fill="#fff"/>
+  <path d="M44 42v8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
 </svg>

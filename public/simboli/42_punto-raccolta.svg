@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
-  <rect width="80" height="80" rx="12" fill="#D55E00"/>
-  <circle cx="40" cy="40" r="4" fill="#fff"/>
-  <path d="M14 40h14M66 40H52M40 14v14M40 66V52" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-  <path d="M24 32l-10 8 10 8M56 32l10 8-10 8M32 24l8-10 8 10M32 56l8 10 8-10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Punto di raccolta">
+  <rect width="80" height="80" rx="14" fill="#D55E00"/>
+  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
+  <circle cx="35" cy="37" r="2.8" fill="#fff"/>
+  <circle cx="45" cy="37" r="2.8" fill="#fff"/>
+  <circle cx="40" cy="45" r="2.8" fill="#fff"/>
+  <path d="M14 26l10 10M66 26L56 36M14 54l10-10M66 54L56 44" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M22 36l6-6M58 36l-6-6M22 44l6 6M58 44l-6 6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
 </svg>

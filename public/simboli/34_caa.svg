@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
-  <rect width="80" height="80" rx="12" fill="#009E73"/>
-  <text x="40" y="48" text-anchor="middle" fill="#fff" font-size="24" font-weight="700" font-family="Lexend, Arial, sans-serif">CAA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="CAA">
+  <rect width="80" height="80" rx="14" fill="#009E73"/>
+  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
+  <path d="M16 24h28a6 6 0 016 6v10a6 6 0 01-6 6H30l-8 6v-6h-6a6 6 0 01-6-6V30a6 6 0 016-6z" fill="none" stroke="#fff" stroke-width="3"/>
+  <text x="40" y="38" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Arial, sans-serif">CAA</text>
 </svg>

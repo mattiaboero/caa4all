@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
-  <rect width="80" height="80" rx="12" fill="#56B4E9"/>
-  <rect x="20" y="26" width="40" height="32" rx="3" fill="none" stroke="#fff" stroke-width="2.5"/>
-  <path d="M28 26V18h24v8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="40" cy="42" r="7" fill="#fff" opacity="0.55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Oggetto esposto">
+  <rect width="80" height="80" rx="14" fill="#56B4E9"/>
+  <rect x="6" y="6" width="68" height="68" rx="10" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.6"/>
+  <path d="M24 58h32" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <rect x="30" y="44" width="20" height="14" rx="2" fill="none" stroke="#fff" stroke-width="3"/>
+  <circle cx="40" cy="30" r="10" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M40 20c3 3 3 7 0 10-3-3-3-7 0-10z" fill="#fff" opacity="0.9"/>
 </svg>
