@@ -434,6 +434,7 @@ const CAT_KEYS = { "Orientamento": "catOrientamento", "Servizi": "catServizi", "
 /* === SYMBOL LIBRARY === */
 const SYMBOL_VERSION = "20260413-1";
 const sym = (path) => `${path}?v=${SYMBOL_VERSION}`;
+const LOGO_VERSION = "20260413-1";
 
 const LIBRARY = [
   { category: "Orientamento", color: "#0072B2", shape: "circle", symbols: [
@@ -1029,9 +1030,18 @@ export default function CAAMapBuilder() {
       {/* HEADER */}
       <header role="banner" style={{ background: C.toolbarBg, color: C.toolbarText, padding: isMobile ? "10px 12px" : "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, cursor: "pointer" }} onClick={() => setModal("project")} role="button" tabIndex={0} aria-label={t.project} onKeyDown={e => e.key === "Enter" && setModal("project")}>
-          <div style={{ width: isMobile ? 28 : 34, height: isMobile ? 28 : 34, borderRadius: 8, background: C.primary, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} aria-hidden="true">
-            <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 700, color: "#fff" }}>4all</span>
-          </div>
+          <img
+            src={`/logo-caa4all.svg?v=${LOGO_VERSION}`}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: isMobile ? 28 : 34,
+              height: isMobile ? 28 : 34,
+              borderRadius: 8,
+              display: "block",
+              flexShrink: 0,
+            }}
+          />
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: isMobile ? 14 : 18, fontWeight: 700, whiteSpace: "nowrap" }}>{t.appName}</div>
             {!isMobile && <div style={{ fontSize: 11, opacity: 0.7, fontWeight: 300 }}>{t.appSub}</div>}
