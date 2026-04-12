@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { Download, MousePointer2, ZoomIn, ZoomOut, Upload, X, RotateCcw, Image, HelpCircle, Search, ChevronUp, ChevronDown, Layers, Shield, Cookie, Info, FileDown, Undo2, Type, Globe, Grid3X3, Share2, FileText } from "lucide-react";
 
 /* === PALETTE — Okabe-Ito colorblind-safe === */
@@ -84,6 +84,28 @@ const T = {
     noMapTitle: "Non hai una mappa pronta?",
     noMapText: "Se i tuoi file sono tecnici, a bassa risoluzione o graficamente inadeguati, possiamo realizzare un rilievo e una mappa su misura per il tuo museo.",
     noMapCta: "Richiedi un preventivo",
+    shareTitle: "Condividi CAA4all",
+    shareLinkedIn: "Condividi su LinkedIn",
+    shareFacebook: "Condividi su Facebook",
+    shareX: "Condividi su X",
+    downloadSvgTitle: "Scarica i simboli SVG",
+    downloadSvgSub: "File vettoriali, gratuiti, ridistribuibili",
+    downloadSvgAction: "Scarica ZIP",
+    close: "Chiudi",
+    changeLanguage: "Cambia lingua",
+    closeError: "Chiudi errore",
+    mapTools: "Strumenti mappa",
+    openLibrary: "Apri libreria",
+    closeLibrary: "Chiudi libreria",
+    zoomOut: "Zoom indietro",
+    zoomIn: "Zoom avanti",
+    mapArea: "Mappa del museo",
+    skipToMap: "Vai alla mappa",
+    exportPngImage: "PNG (immagine)",
+    exportPdfA4: "PDF — A4",
+    exportPdfA3: "PDF — A3",
+    removePrefix: "Rimuovi",
+    quoteSubject: "Richiesta preventivo mappa museo",
   },
   en: {
     appName: "CAA4all",
@@ -142,6 +164,28 @@ const T = {
     noMapTitle: "Don't have a map ready?",
     noMapText: "If your files are technical drawings, low resolution or not suitable for visitors, we can survey your museum and create a custom map.",
     noMapCta: "Request a quote",
+    shareTitle: "Share CAA4all",
+    shareLinkedIn: "Share on LinkedIn",
+    shareFacebook: "Share on Facebook",
+    shareX: "Share on X",
+    downloadSvgTitle: "Download SVG symbols",
+    downloadSvgSub: "Vector files, free to reuse and redistribute",
+    downloadSvgAction: "Download ZIP",
+    close: "Close",
+    changeLanguage: "Change language",
+    closeError: "Close error",
+    mapTools: "Map tools",
+    openLibrary: "Open library",
+    closeLibrary: "Close library",
+    zoomOut: "Zoom out",
+    zoomIn: "Zoom in",
+    mapArea: "Museum map",
+    skipToMap: "Skip to map",
+    exportPngImage: "PNG (image)",
+    exportPdfA4: "PDF — A4",
+    exportPdfA3: "PDF — A3",
+    removePrefix: "Remove",
+    quoteSubject: "Request quote for museum map",
   },
   fr: {
     appName: "CAA4all",
@@ -200,9 +244,32 @@ const T = {
     noMapTitle: "Vous n'avez pas de plan prêt ?",
     noMapText: "Si vos fichiers sont des plans techniques, en basse résolution ou inadaptés au public, nous pouvons réaliser un relevé et un plan sur mesure pour votre musée.",
     noMapCta: "Demander un devis",
+    shareTitle: "Partager CAA4all",
+    shareLinkedIn: "Partager sur LinkedIn",
+    shareFacebook: "Partager sur Facebook",
+    shareX: "Partager sur X",
+    downloadSvgTitle: "Télécharger les symboles SVG",
+    downloadSvgSub: "Fichiers vectoriels, gratuits et redistribuables",
+    downloadSvgAction: "Télécharger le ZIP",
+    close: "Fermer",
+    changeLanguage: "Changer de langue",
+    closeError: "Fermer l'erreur",
+    mapTools: "Outils de carte",
+    openLibrary: "Ouvrir la bibliothèque",
+    closeLibrary: "Fermer la bibliothèque",
+    zoomOut: "Zoom arrière",
+    zoomIn: "Zoom avant",
+    mapArea: "Plan du musée",
+    skipToMap: "Aller à la carte",
+    exportPngImage: "PNG (image)",
+    exportPdfA4: "PDF — A4",
+    exportPdfA3: "PDF — A3",
+    removePrefix: "Supprimer",
+    quoteSubject: "Demande de devis plan musée",
   },
   es: {
     appName: "CAA4all",
+    appSub: "Mapas museales accesibles con símbolos CAA",
     project: "El proyecto",
     guide: "Guía",
     reset: "Reiniciar",
@@ -257,6 +324,28 @@ const T = {
     noMapTitle: "¿No tienes un mapa listo?",
     noMapText: "Si tus archivos son planos técnicos, de baja resolución o inadecuados para los visitantes, podemos realizar un relevamiento y crear un mapa a medida para tu museo.",
     noMapCta: "Solicitar presupuesto",
+    shareTitle: "Compartir CAA4all",
+    shareLinkedIn: "Compartir en LinkedIn",
+    shareFacebook: "Compartir en Facebook",
+    shareX: "Compartir en X",
+    downloadSvgTitle: "Descargar símbolos SVG",
+    downloadSvgSub: "Archivos vectoriales, gratis y redistribuibles",
+    downloadSvgAction: "Descargar ZIP",
+    close: "Cerrar",
+    changeLanguage: "Cambiar idioma",
+    closeError: "Cerrar error",
+    mapTools: "Herramientas del mapa",
+    openLibrary: "Abrir biblioteca",
+    closeLibrary: "Cerrar biblioteca",
+    zoomOut: "Alejar zoom",
+    zoomIn: "Acercar zoom",
+    mapArea: "Mapa del museo",
+    skipToMap: "Ir al mapa",
+    exportPngImage: "PNG (imagen)",
+    exportPdfA4: "PDF — A4",
+    exportPdfA3: "PDF — A3",
+    removePrefix: "Eliminar",
+    quoteSubject: "Solicitud de presupuesto mapa museo",
   },
   de: {
     appName: "CAA4all",
@@ -315,6 +404,28 @@ const T = {
     noMapTitle: "Keine Karte vorhanden?",
     noMapText: "Wenn Ihre Dateien technische Zeichnungen, niedrig aufgelöst oder für Besucher ungeeignet sind, können wir Ihr Museum vermessen und eine passende Karte erstellen.",
     noMapCta: "Angebot anfordern",
+    shareTitle: "CAA4all teilen",
+    shareLinkedIn: "Auf LinkedIn teilen",
+    shareFacebook: "Auf Facebook teilen",
+    shareX: "Auf X teilen",
+    downloadSvgTitle: "SVG-Symbole herunterladen",
+    downloadSvgSub: "Vektordateien, kostenlos und weiterverteilbar",
+    downloadSvgAction: "ZIP herunterladen",
+    close: "Schließen",
+    changeLanguage: "Sprache wechseln",
+    closeError: "Fehler schließen",
+    mapTools: "Kartenwerkzeuge",
+    openLibrary: "Bibliothek öffnen",
+    closeLibrary: "Bibliothek schließen",
+    zoomOut: "Herauszoomen",
+    zoomIn: "Hereinzoomen",
+    mapArea: "Museumskarte",
+    skipToMap: "Zur Karte springen",
+    exportPngImage: "PNG (Bild)",
+    exportPdfA4: "PDF — A4",
+    exportPdfA3: "PDF — A3",
+    removePrefix: "Entfernen",
+    quoteSubject: "Angebotsanfrage Museumskarte",
   },
 };
 
@@ -432,14 +543,14 @@ function CategoryShape({ shape, color, size = 12 }) {
 }
 
 /* === MODAL === */
-function Modal({ title, onClose, isMobile, children }) {
+function Modal({ title, onClose, isMobile, children, closeLabel = "Close" }) {
   useEffect(() => { const h = (e) => { if (e.key === "Escape") onClose(); }; window.addEventListener("keydown", h); return () => window.removeEventListener("keydown", h); }, [onClose]);
   return (
     <div onClick={onClose} role="dialog" aria-modal="true" aria-label={title} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 12 : 40 }}>
       <div onClick={e => e.stopPropagation()} style={{ background: C.surface, borderRadius: 12, width: "100%", maxWidth: 680, maxHeight: isMobile ? "85vh" : "80vh", display: "flex", flexDirection: "column", boxShadow: "0 8px 40px rgba(0,0,0,0.2)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isMobile ? "14px 16px" : "18px 24px", borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
           <h2 style={{ margin: 0, fontSize: isMobile ? 16 : 18, fontWeight: 700, color: C.text }}>{title}</h2>
-          <button onClick={onClose} aria-label="Chiudi" style={{ background: "none", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}><X size={20}/></button>
+          <button onClick={onClose} aria-label={closeLabel} style={{ background: "none", border: "none", cursor: "pointer", color: C.textMuted, padding: 4 }}><X size={20}/></button>
         </div>
         <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "16px 16px 24px" : "24px 24px 32px", WebkitOverflowScrolling: "touch" }}>{children}</div>
       </div>
@@ -456,30 +567,45 @@ function PolicyContent({ text }) {
   });
 }
 
-function ProjectContent({ isMobile }) {
+function ProjectContent({ isMobile, t }) {
   const siteUrl = "https://caa4all.org";
-  const shareText = "CAA4all: webapp gratuita per creare mappe museali accessibili con simboli CAA";
+  const shareText = t.shareText;
   return (
     <>
       {PROJECT_TEXT.map((block, i) => {
         if (block.type === "title") return <h3 key={i} style={{ fontSize: isMobile ? 22 : 26, fontWeight: 700, color: C.text, margin: "0 0 20px", letterSpacing: "-0.01em" }}>{block.text}</h3>;
         if (block.type === "heading") return <h4 key={i} style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "24px 0 8px" }}>{block.text}</h4>;
-        if (block.type === "download") return <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10 }}><FileDown size={20} style={{ color: C.primary, flexShrink: 0 }}/><div><div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>Scarica i simboli SVG</div><div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>File vettoriali, gratuiti, ridistribuibili</div></div></div>;
+        if (block.type === "download") return (
+          <div key={i} style={{ margin: "12px 0 8px", padding: "14px 18px", background: C.primaryLight, borderRadius: 8, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <FileDown size={20} style={{ color: C.primary, flexShrink: 0 }}/>
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.primary }}>{t.downloadSvgTitle}</div>
+              <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{t.downloadSvgSub}</div>
+            </div>
+            <a
+              href="/simboli-caa4all.zip"
+              download
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 12px", borderRadius: 6, background: C.primary, color: "#fff", textDecoration: "none", fontSize: 12, fontWeight: 600 }}
+            >
+              {t.downloadSvgAction}
+            </a>
+          </div>
+        );
         return <p key={i} style={{ fontSize: 14, color: C.text, lineHeight: 1.8, margin: "0 0 14px" }}>{block.text}</p>;
       })}
       {/* Share buttons */}
       <div style={{ marginTop: 28, paddingTop: 20, borderTop: `1px solid ${C.border}` }}>
-        <h4 style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "0 0 12px" }}>Condividi CAA4all</h4>
+        <h4 style={{ fontSize: 15, fontWeight: 600, color: C.primary, margin: "0 0 12px" }}>{t.shareTitle}</h4>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#0072B2")} aria-label="Condividi su LinkedIn">
+          <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#0072B2")} aria-label={t.shareLinkedIn}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             LinkedIn
           </a>
-          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1877F2")} aria-label="Condividi su Facebook">
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1877F2")} aria-label={t.shareFacebook}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             Facebook
           </a>
-          <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1A1A1A")} aria-label="Condividi su X">
+          <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(siteUrl)}`} target="_blank" rel="noopener noreferrer" style={shareBtnStyle("#1A1A1A")} aria-label={t.shareX}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             X
           </a>
@@ -501,13 +627,13 @@ function ExportMenu({ onPNG, onPDF, show, setShow, disabled, exporting, t, isMob
       {show && !disabled && (
         <div style={{ position: "absolute", top: "100%", right: 0, marginTop: 4, background: C.surface, borderRadius: 8, boxShadow: "0 4px 20px rgba(0,0,0,0.15)", border: `1px solid ${C.border}`, zIndex: 1000, minWidth: 160, overflow: "hidden" }}>
           <button onClick={() => { onPNG(); setShow(false); }} style={exportItemStyle}>
-            <Image size={14}/> PNG (immagine)
+            <Image size={14}/> {t.exportPngImage}
           </button>
           <button onClick={() => onPDF("A4")} style={exportItemStyle}>
-            <FileText size={14}/> PDF — A4
+            <FileText size={14}/> {t.exportPdfA4}
           </button>
           <button onClick={() => onPDF("A3")} style={exportItemStyle}>
-            <FileText size={14}/> PDF — A3
+            <FileText size={14}/> {t.exportPdfA3}
           </button>
         </div>
       )}
@@ -538,11 +664,11 @@ function CookieBanner({ onAccept, isMobile, t }) {
 }
 
 /* === LANGUAGE PICKER === */
-function LangPicker({ lang, setLang, isMobile }) {
+function LangPicker({ lang, setLang, isMobile, t }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ position: "relative" }}>
-      <button onClick={() => setOpen(!open)} aria-label="Cambia lingua" aria-expanded={open} style={{ display: "flex", alignItems: "center", gap: 4, padding: isMobile ? "7px 8px" : "7px 12px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.25)", background: "transparent", color: C.toolbarText, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+      <button onClick={() => setOpen(!open)} aria-label={t.changeLanguage} aria-expanded={open} style={{ display: "flex", alignItems: "center", gap: 4, padding: isMobile ? "7px 8px" : "7px 12px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.25)", background: "transparent", color: C.toolbarText, fontFamily: "inherit", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
         <Globe size={15}/> {!isMobile && LANGS[lang].flag}
       </button>
       {open && (
@@ -569,7 +695,7 @@ export default function CAAMapBuilder() {
   const isTablet = bp === "tablet";
 
   const [lang, setLang] = useState("it");
-  const t = T[lang];
+  const t = useMemo(() => ({ ...T.it, ...(T[lang] || {}) }), [lang]);
 
   const [mapImage, setMapImage] = useState(null);
   const [mapDim, setMapDim] = useState({ w: 0, h: 0 });
@@ -609,7 +735,7 @@ export default function CAAMapBuilder() {
     });
   };
 
-  const doUndo = () => {
+  const doUndo = useCallback(() => {
     if (undoStack.length === 0) { setError(t.nothingToUndo); return; }
     setUndoStack(prev => {
       const next = [...prev];
@@ -617,7 +743,7 @@ export default function CAAMapBuilder() {
       setPlaced(last);
       return next;
     });
-  };
+  }, [undoStack, t.nothingToUndo]);
 
   /* --- Keyboard shortcut for undo --- */
   useEffect(() => {
@@ -626,7 +752,7 @@ export default function CAAMapBuilder() {
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
-  });
+  }, [doUndo]);
 
   /* --- Map upload with magic bytes validation --- */
   const handleMap = (e) => {
@@ -696,7 +822,13 @@ export default function CAAMapBuilder() {
 
   useEffect(() => {
     if (dragIdx === null) return;
-    const mv = (e) => { const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return; const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY; setPlaced(p => p.map((s, i) => i === dragIdx ? { ...s, x: snap((cx - rect.left - dragOff.x) / scale), y: snap((cy - rect.top - dragOff.y) / scale) } : s)); };
+    const mv = (e) => {
+      if (e.touches && e.cancelable) e.preventDefault();
+      const rect = mapRef.current?.getBoundingClientRect(); if (!rect) return;
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
+      setPlaced(p => p.map((s, i) => i === dragIdx ? { ...s, x: snap((cx - rect.left - dragOff.x) / scale), y: snap((cy - rect.top - dragOff.y) / scale) } : s));
+    };
     const up = () => setDragIdx(null);
     window.addEventListener("mousemove", mv); window.addEventListener("mouseup", up);
     window.addEventListener("touchmove", mv, { passive: false }); window.addEventListener("touchend", up);
@@ -841,6 +973,7 @@ export default function CAAMapBuilder() {
   const filtered = LIBRARY.map(c => ({ ...c, symbols: c.symbols.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) })).filter(c => c.symbols.length > 0);
   const dW = mapDim.w * scale, dH = mapDim.h * scale;
   const sideW = isTablet ? 200 : 230;
+  const quoteMailto = `mailto:info@caa4all.org?subject=${encodeURIComponent(t.quoteSubject)}`;
 
   /* === SIDEBAR CONTENT === */
   const SidebarContent = (
@@ -865,7 +998,7 @@ export default function CAAMapBuilder() {
           <div key={cat.category} role="listitem">
             <button onClick={() => setOpenCats(p => ({ ...p, [cat.category]: !p[cat.category] }))} aria-expanded={openCats[cat.category]} aria-label={catName}
               style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: C.text, textAlign: "left", outline: "none" }}
-              onFocus={e => e.target.style.outlineOffset = focusOffset} onBlur={e => e.target.style.outline = "none"}>
+              onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
               <CategoryShape shape={cat.shape} color={cat.color} size={12} />
               {catName}
               <span style={{ marginLeft: "auto", fontSize: 10, color: C.textLight }} aria-hidden="true">{openCats[cat.category] ? "▾" : "▸"}</span>
@@ -899,7 +1032,7 @@ export default function CAAMapBuilder() {
       {/* SKIP LINK (accessibility) */}
       <a href="#map-area" style={{ position: "absolute", left: -9999, top: 0, background: C.primary, color: "#fff", padding: "8px 16px", zIndex: 99999, fontSize: 14, fontWeight: 600, borderRadius: "0 0 8px 0" }}
         onFocus={e => e.target.style.left = "0"} onBlur={e => e.target.style.left = "-9999px"}>
-        Vai alla mappa
+        {t.skipToMap}
       </a>
 
       {/* HEADER */}
@@ -914,7 +1047,7 @@ export default function CAAMapBuilder() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, flexShrink: 0, alignItems: "center" }}>
-          <LangPicker lang={lang} setLang={setLang} isMobile={isMobile} />
+          <LangPicker lang={lang} setLang={setLang} isMobile={isMobile} t={t} />
           <HBtn icon={<Info size={15}/>} label={isMobile ? "" : t.project} onClick={() => setModal("project")} ariaLabel={t.project} />
           {!isMobile && <HBtn icon={<HelpCircle size={15}/>} label={t.guide} onClick={() => setShowHelp(!showHelp)} ariaLabel={t.guide} />}
           <HBtn icon={<Undo2 size={15}/>} label={isMobile ? "" : t.undo} onClick={doUndo} disabled={undoStack.length === 0} ariaLabel={t.undo} />
@@ -934,7 +1067,7 @@ export default function CAAMapBuilder() {
 
       {error && (
         <div role="alert" style={{ background: C.warningLight, borderBottom: `2px solid ${C.warning}`, padding: "8px 16px", fontSize: 13, color: C.warning, fontWeight: 500, display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-          {error}<button onClick={() => setError(null)} aria-label="Chiudi errore" style={{ background: "none", border: "none", color: C.warning, cursor: "pointer", padding: 0 }}><X size={16}/></button>
+          {error}<button onClick={() => setError(null)} aria-label={t.closeError} style={{ background: "none", border: "none", color: C.warning, cursor: "pointer", padding: 0 }}><X size={16}/></button>
         </div>
       )}
 
@@ -947,13 +1080,13 @@ export default function CAAMapBuilder() {
 
         <main role="main" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
           {/* Toolbar */}
-          <nav aria-label="Strumenti mappa" style={{ padding: isMobile ? "6px 10px" : "8px 16px", background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: isMobile ? 6 : 10, fontSize: 12, flexWrap: "nowrap", overflowX: "auto", flexShrink: 0 }}>
-            {!isMobile && <button onClick={() => setSidebarOpen(!sidebarOpen)} style={tBtn} aria-label={sidebarOpen ? "Chiudi libreria" : "Apri libreria"} aria-expanded={sidebarOpen}><Layers size={14}/></button>}
+          <nav aria-label={t.mapTools} style={{ padding: isMobile ? "6px 10px" : "8px 16px", background: C.surfaceAlt, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: isMobile ? 6 : 10, fontSize: 12, flexWrap: "nowrap", overflowX: "auto", flexShrink: 0 }}>
+            {!isMobile && <button onClick={() => setSidebarOpen(!sidebarOpen)} style={tBtn} aria-label={sidebarOpen ? t.closeLibrary : t.openLibrary} aria-expanded={sidebarOpen}><Layers size={14}/></button>}
             <button onClick={() => mapFileRef.current?.click()} style={tBtn} aria-label={t.uploadMap}><Upload size={14}/> {isMobile ? t.uploadMapShort : t.uploadMap}</button>
             <span style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} aria-hidden="true" />
-            <button onClick={() => setScale(s => Math.max(s - 0.15, 0.2))} style={tBtn} disabled={!mapImage} aria-label="Zoom indietro"><ZoomOut size={14}/></button>
+            <button onClick={() => setScale(s => Math.max(s - 0.15, 0.2))} style={tBtn} disabled={!mapImage} aria-label={t.zoomOut}><ZoomOut size={14}/></button>
             <span style={{ color: C.textMuted, fontWeight: 500, minWidth: 36, textAlign: "center", flexShrink: 0 }} aria-live="polite">{Math.round(scale * 100)}%</span>
-            <button onClick={() => setScale(s => Math.min(s + 0.15, 3))} style={tBtn} disabled={!mapImage} aria-label="Zoom avanti"><ZoomIn size={14}/></button>
+            <button onClick={() => setScale(s => Math.min(s + 0.15, 3))} style={tBtn} disabled={!mapImage} aria-label={t.zoomIn}><ZoomIn size={14}/></button>
             {!isMobile && <button onClick={() => setScale(1)} style={{ ...tBtn, fontSize: 11 }} disabled={!mapImage} aria-label={t.fit}>{t.fit}</button>}
             <span style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} aria-hidden="true" />
             <button onClick={() => setSnapGrid(!snapGrid)} disabled={!mapImage} aria-pressed={snapGrid} aria-label={t.snapGrid}
@@ -989,13 +1122,13 @@ export default function CAAMapBuilder() {
                 <div style={{ width: "100%", padding: "16px 20px", background: C.surface, borderRadius: 10, border: `1px solid ${C.border}`, textAlign: "center" }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 4 }}>{t.noMapTitle}</div>
                   <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6, marginBottom: 10 }}>{t.noMapText}</div>
-                  <a href="mailto:info@caa4all.org?subject=Richiesta preventivo mappa museo" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, background: C.primary, color: "#fff", fontFamily: "inherit", fontWeight: 600, fontSize: 12, textDecoration: "none", cursor: "pointer" }}>
+                  <a href={quoteMailto} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 18px", borderRadius: 6, background: C.primary, color: "#fff", fontFamily: "inherit", fontWeight: 600, fontSize: 12, textDecoration: "none", cursor: "pointer" }}>
                     {t.noMapCta}
                   </a>
                 </div>
               </div>
             ) : (
-              <div ref={mapRef} onClick={placeSymbol} aria-label="Mappa del museo" role="application"
+              <div ref={mapRef} onClick={placeSymbol} aria-label={t.mapArea} role="application"
                 style={{ position: "relative", width: dW, height: dH, flexShrink: 0, cursor: selected ? "crosshair" : "default", boxShadow: "0 2px 20px rgba(0,0,0,0.12)", borderRadius: 4, overflow: "hidden" }}>
                 <img src={mapImage} alt="Mappa museo" style={{ width: dW, height: dH, display: "block", userSelect: "none", pointerEvents: "none" }} draggable={false} />
                 {/* Grid overlay */}
@@ -1032,7 +1165,7 @@ export default function CAAMapBuilder() {
                     {/* Hover/focus controls */}
                     {(hoverIdx === i || (isMobile && i === placed.length - 1 && dragIdx === null)) && (
                       <>
-                        <button onClick={e => { e.stopPropagation(); removeSymbol(i); }} aria-label={`Rimuovi ${p.name}`}
+                        <button onClick={e => { e.stopPropagation(); removeSymbol(i); }} aria-label={`${t.removePrefix} ${p.name}`}
                           style={{ position: "absolute", top: -10, right: -10, width: isMobile ? 28 : 22, height: isMobile ? 28 : 22, borderRadius: "50%", border: "2px solid #fff", background: C.danger, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 110, padding: 0 }}><X size={isMobile ? 14 : 12}/></button>
                         {!p.label && (
                           <button onClick={e => { e.stopPropagation(); setEditingLabelIdx(i); }} aria-label={t.addLabel}
@@ -1086,9 +1219,9 @@ export default function CAAMapBuilder() {
 
       {!cookieAccepted && <CookieBanner onAccept={() => setCookieAccepted(true)} isMobile={isMobile} t={t} />}
 
-      {modal === "project" && <Modal title={t.project} onClose={() => setModal(null)} isMobile={isMobile}><ProjectContent isMobile={isMobile} /></Modal>}
-      {modal === "privacy" && <Modal title={t.privacy + " Policy"} onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={PRIVACY_POLICY} /></Modal>}
-      {modal === "cookie" && <Modal title={t.cookie + " Policy"} onClose={() => setModal(null)} isMobile={isMobile}><PolicyContent text={COOKIE_POLICY} /></Modal>}
+      {modal === "project" && <Modal title={t.project} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><ProjectContent isMobile={isMobile} t={t} /></Modal>}
+      {modal === "privacy" && <Modal title={t.privacy + " Policy"} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><PolicyContent text={PRIVACY_POLICY} /></Modal>}
+      {modal === "cookie" && <Modal title={t.cookie + " Policy"} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><PolicyContent text={COOKIE_POLICY} /></Modal>}
     </div>
   );
 }

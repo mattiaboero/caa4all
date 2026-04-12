@@ -1,1 +1,5 @@
-/*  /index.html  200
+/app               /index-app.html  200
+/editor            /index-app.html  200
+/index-app         /index-app.html  200
+/index-app.html    /index-app.html  200
+/*                 /index.html      200

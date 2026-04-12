@@ -13,7 +13,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="CAA4all — Mappe museali accessibili con simboli CAA">
-  <meta property="og:description" content="Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa. Simboli gratuiti, modificabili e ridistribuibili.">
+  <meta property="og:description" content="Webapp gratuita per creare mappe museali accessibili con simboli CAA. Simboli gratuiti, modificabili e ridistribuibili.">
   <meta property="og:url" content="https://caa4all.org/">
   <meta property="og:site_name" content="CAA4all">
   <meta property="og:locale" content="it_IT">
@@ -28,6 +28,10 @@
   <meta name="twitter:image" content="https://caa4all.org/og-image.png">
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#2C2926">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +44,7 @@
     "@type": "WebApplication",
     "name": "CAA4all",
     "url": "https://caa4all.org",
-    "description": "Webapp gratuita per creare mappe museali accessibili con simboli della Comunicazione Aumentativa Alternativa.",
+    "description": "Webapp gratuita per creare mappe museali accessibili con simboli CAA.",
     "applicationCategory": "DesignApplication",
     "operatingSystem": "Web browser",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -77,7 +81,6 @@
       flex-direction: column;
     }
 
-    /* Header */
     header {
       background: var(--toolbar-bg);
       color: var(--toolbar-text);
@@ -114,7 +117,6 @@
       margin-top: 2px;
     }
 
-    /* Main */
     main {
       flex: 1;
       display: flex;
@@ -125,16 +127,15 @@
 
     .container {
       width: 100%;
-      max-width: 620px;
+      max-width: 700px;
     }
 
-    /* Progress section */
     .progress-section {
       background: var(--surface);
       border-radius: 12px;
       border: 1px solid var(--border);
-      padding: 32px;
-      margin-bottom: 28px;
+      padding: 28px;
+      margin-bottom: 24px;
       text-align: center;
     }
 
@@ -161,7 +162,7 @@
     }
 
     .progress-bar-inner {
-      width: 60%;
+      width: 75%;
       height: 100%;
       background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
       border-radius: 6px;
@@ -183,9 +184,42 @@
       line-height: 1.5;
     }
 
-    /* Content sections */
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 7px;
+      font-family: 'Lexend', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
     .content-section {
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .content-section h2 {
@@ -210,7 +244,6 @@
       margin-bottom: 6px;
     }
 
-    /* Checklist */
     .checklist {
       list-style: none;
       padding: 0;
@@ -251,16 +284,6 @@
       flex-shrink: 0;
     }
 
-    .check-todo {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: transparent;
-      flex-shrink: 0;
-    }
-
-    /* Contact */
     .contact-box {
       background: var(--primary-light);
       border-radius: 10px;
@@ -276,21 +299,6 @@
       margin-bottom: 12px;
     }
 
-    .contact-box a.btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 22px;
-      border-radius: 7px;
-      background: var(--primary);
-      color: #fff;
-      font-family: 'Lexend', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      text-decoration: none;
-    }
-
-    /* Footer */
     footer {
       padding: 14px 24px;
       text-align: center;
@@ -307,19 +315,19 @@
       text-underline-offset: 2px;
     }
 
-    /* Responsive */
     @media (max-width: 640px) {
       header { padding: 12px 16px; }
       .header-text h1 { font-size: 16px; }
       .header-text p { display: none; }
       main { padding: 24px 16px; }
-      .progress-section { padding: 24px 20px; }
+      .progress-section { padding: 22px 18px; }
       .progress-percent { font-size: 26px; }
+      .cta-row { flex-direction: column; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo" aria-hidden="true">4all</div>
     <div class="header-text">
@@ -330,82 +338,64 @@
 
   <main>
     <div class="container">
-
-      <!-- Progress -->
       <div class="progress-section">
-        <div class="progress-label">Stiamo lavorando all'app</div>
-        <div class="progress-sublabel">Avanzamento del progetto</div>
-        <div class="progress-bar-outer" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Avanzamento progetto: 60%">
+        <div class="progress-label">CAA4all è online</div>
+        <div class="progress-sublabel">Editor operativo e in continuo miglioramento</div>
+        <div class="progress-bar-outer" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="Avanzamento progetto: 75%">
           <div class="progress-bar-inner"></div>
         </div>
-        <div class="progress-percent">60%</div>
-        <div class="progress-status">Simboli e funzionalità in fase di completamento</div>
+        <div class="progress-percent">75%</div>
+        <div class="progress-status">Funzioni principali disponibili: caricamento mappa, simboli CAA, esportazione PNG/PDF, etichette, griglia.</div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/app">Apri l'editor CAA4all</a>
+          <a class="btn btn-secondary" href="/simboli-caa4all.zip" download>Scarica simboli SVG</a>
+        </div>
       </div>
 
-      <!-- What -->
       <div class="content-section">
         <h2>Cos'è CAA4all</h2>
-        <p>Una webapp gratuita per creare mappe museali accessibili. Carichi la planimetria del tuo museo, ci posizioni sopra i simboli della Comunicazione Aumentativa Alternativa dalla libreria, e scarichi il risultato come immagine pronta per la stampa. Nessun login, nessun costo.</p>
+        <p>Una webapp gratuita per creare mappe museali accessibili. Carichi la planimetria del tuo museo, ci posizioni sopra i simboli della Comunicazione Aumentativa Alternativa dalla libreria, e scarichi il risultato come immagine pronta per la stampa.</p>
       </div>
 
-      <!-- Symbols -->
       <div class="content-section">
         <h2>I simboli</h2>
-        <p>Li ho disegnati io, Mattia Boero. Ogni simbolo rappresenta l'azione che il visitatore compie in quel punto, non la convenzione grafica a cui siamo abituati. Il bagno è le mani sotto l'acqua e il water, non la sagoma uomo/donna. Nella CAA conta l'azione.</p>
+        <p>Li ho disegnati io, Mattia Boero. Ogni simbolo rappresenta l'azione che il visitatore compie in quel punto, non la convenzione grafica a cui siamo abituati. Nella CAA conta l'azione.</p>
         <p>I colori usano la palette Okabe-Ito, progettata per essere distinguibile anche da persone daltoniche. I simboli sono gratuiti, modificabili e ridistribuibili senza vincoli.</p>
       </div>
 
-      <!-- Status checklist -->
       <div class="content-section">
         <h2>A che punto siamo</h2>
         <ul class="checklist">
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Struttura dell'app (React, Vite, Cloudflare Pages)
-          </li>
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Interfaccia multilingua (IT, EN, FR, ES, DE)
-          </li>
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Accessibilità: tastiera, screen reader, daltonismo
-          </li>
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Esportazione PNG e PDF (A4 / A3)
-          </li>
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Griglia magnetica e etichette simboli
-          </li>
-          <li>
-            <span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Privacy e cookie policy GDPR
-          </li>
-          <li>
-            <span class="check-wip"><svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px"><circle cx="6" cy="6" r="2.5" fill="#fff"/></svg></span>
-            Disegno simboli CAA (in corso)
-          </li>
-          <li>
-            <span class="check-todo"></span>
-            Immagini per anteprime social e favicon
-          </li>
-          <li>
-            <span class="check-todo"></span>
-            File SVG scaricabili
-          </li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Struttura dell'app (React, Vite, Cloudflare Pages)</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Interfaccia multilingua (IT, EN, FR, ES, DE)</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Accessibilità: tastiera, screen reader, daltonismo</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Esportazione PNG e PDF (A4 / A3)</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Griglia magnetica ed etichette simboli</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Immagini social e favicon</li>
+          <li><span class="check-done"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>File SVG scaricabili</li>
+          <li><span class="check-wip"><svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px"><circle cx="6" cy="6" r="2.5" fill="#fff"/></svg></span>Nuovi simboli CAA in corso</li>
         </ul>
       </div>
 
-      <!-- No map -->
       <div class="content-section">
         <h3>Non hai una mappa pronta?</h3>
         <p>Se i tuoi file sono planimetrie tecniche, a bassa risoluzione o graficamente inadeguati per il pubblico, possiamo realizzare un rilievo e una mappa su misura per il tuo museo.</p>
       </div>
 
-      <!-- Contact -->
       <div class="contact-box">
-        <p>Se lavori nell'accessibilità museale, hai suggerimenti, o vuoi richiedere un preventivo per la planimetria del tuo museo, scrivimi.</p>
-        <a href="/cdn-cgi/l/email-protection#9ff6f1f9f0dffcfefeabfef3f3b1f0edf8a0eceafdf5fafceba2dcdedeabfef3f3" class="btn">Scrivimi a <span class="__cf_email__" data-cfemail="82ebece4edc2e1e3e3b6e3eeeeacedf0e5">[email&#160;protected]</span></a>
- 
+        <p>Se lavori nell'accessibilità museale, hai suggerimenti o vuoi richiedere un preventivo per la planimetria del tuo museo, scrivimi.</p>
+        <a class="btn btn-primary" href="mailto:info@caa4all.org?subject=Richiesta%20preventivo%20mappa%20museo">Scrivimi a info@caa4all.org</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> CAA4all · <a href="/app">Apri editor</a> · <a href="/index-app.html">Versione app diretta</a>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
