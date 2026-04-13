@@ -31,6 +31,7 @@ const T = {
     appName: "CAA4all",
     appSub: "Mappe museali accessibili con simboli CAA",
     project: "Il progetto",
+    changelog: "Changelog",
     guide: "Guida",
     reset: "Reset",
     exportPng: "Esporta PNG",
@@ -111,6 +112,7 @@ const T = {
     appName: "CAA4all",
     appSub: "Accessible museum maps with AAC symbols",
     project: "About",
+    changelog: "Changelog",
     guide: "Guide",
     reset: "Reset",
     exportPng: "Export PNG",
@@ -191,6 +193,7 @@ const T = {
     appName: "CAA4all",
     appSub: "Plans de musée accessibles avec symboles CAA",
     project: "Le projet",
+    changelog: "Changelog",
     guide: "Guide",
     reset: "Réinitialiser",
     exportPng: "Exporter PNG",
@@ -271,6 +274,7 @@ const T = {
     appName: "CAA4all",
     appSub: "Mapas museales accesibles con símbolos CAA",
     project: "El proyecto",
+    changelog: "Changelog",
     guide: "Guía",
     reset: "Reiniciar",
     exportPng: "Exportar PNG",
@@ -351,6 +355,7 @@ const T = {
     appName: "CAA4all",
     appSub: "Barrierefreie Museumskarten mit UK-Symbolen",
     project: "Das Projekt",
+    changelog: "Changelog",
     guide: "Anleitung",
     reset: "Zurücksetzen",
     exportPng: "PNG exportieren",
@@ -512,6 +517,29 @@ const PROJECT_TEXT = [
   { type: "paragraph", text: "Se lavori nell'accessibilità museale e hai suggerimenti, correzioni o richieste di nuovi simboli, scrivimi a info@caa4all.org." },
 ];
 
+const CHANGELOG_ENTRIES = [
+  {
+    date: "13 aprile 2026",
+    items: [
+      "Aggiunti nuovi asset di branding: favicon aggiornato e nuovo logo CAA4all nell'header dell'app.",
+      "Corretto il comportamento cache su Cloudflare/browser per logo e simboli (versioning URL e regole di revalidazione dedicate).",
+      "Il simbolo \"Direzione percorso di mostra\" ora funziona come selettore: cliccando compaiono le 4 varianti direzionali (destra, giu, su, sinistra).",
+      "Aggiunta modalità focus direzione: mentre il selettore direzione è aperto, tutti gli altri simboli in libreria diventano in scala di grigi.",
+      "Eseguito smoke test completo su build locale e deploy online, con verifica del bundle pubblicato e degli asset SVG.",
+    ],
+  },
+  {
+    date: "12 aprile 2026",
+    items: [
+      "Verifica allineamento tra repository locale e origin/main e audit tecnico della versione più recente.",
+      "Aggiornata l'informativa legale con i dati reali forniti (titolare, indirizzo, contatti, data ultimo aggiornamento).",
+      "Configurato accesso pubblico alla landing e accesso riservato all'app tramite link dedicato con chiave.",
+      "Risolto il problema di redirect loop segnalato in deploy Cloudflare.",
+      "Revisione e aggiornamento esteso della libreria simboli SVG, con rimozione dei simboli esclusi dal progetto (incluso il file 43 estintore).",
+    ],
+  },
+];
+
 /* === GDPR TEXTS (kept in Italian) === */
 const PRIVACY_POLICY = `Informativa sulla privacy ai sensi del Regolamento (UE) 2016/679 (GDPR)\n\nUltimo aggiornamento: 12 aprile 2026\n\n1. Titolare del trattamento\nIl titolare del trattamento è Mattia Boero, con sede in Corso Galileo Ferraris 148, 10129, Torino, TO, Italia, contattabile all'indirizzo email info@caa4all.org.\n\n2. Dati raccolti\nQuesta applicazione web non raccoglie dati personali. Non è prevista alcuna forma di registrazione, login o autenticazione. Non vengono richiesti nome, email, indirizzo o altri dati identificativi.\n\n3. Trattamento delle immagini\nLe immagini caricate dall'utente (mappe museali) vengono elaborate interamente nel browser dell'utente, sul suo dispositivo. Nessuna immagine viene trasmessa a server esterni, archiviata o conservata dall'applicazione. Al termine della sessione di navigazione o alla chiusura della pagina, tutte le immagini vengono eliminate automaticamente dalla memoria del browser.\n\n4. Cookie\nQuesta applicazione non utilizza cookie di profilazione né cookie di terze parti a scopo pubblicitario. Per maggiori dettagli, consulta la Cookie Policy.\n\n5. Dati di navigazione\nIl server che ospita l'applicazione potrebbe raccogliere automaticamente alcuni dati tecnici (indirizzo IP, tipo di browser, sistema operativo, data e ora di accesso) nei log del server. Questi dati vengono trattati esclusivamente per garantire il funzionamento e la sicurezza del servizio, e non vengono utilizzati per identificare l'utente. La base giuridica è il legittimo interesse del titolare (art. 6, par. 1, lett. f del GDPR).\n\n6. Trasferimento dei dati\nNon viene effettuato alcun trasferimento di dati personali verso Paesi terzi o organizzazioni internazionali.\n\n7. Periodo di conservazione\nI dati tecnici di navigazione eventualmente registrati nei log del server vengono conservati per un massimo di 30 giorni, dopodiché vengono cancellati automaticamente.\n\n8. Diritti dell'utente\nAi sensi degli articoli 15-22 del GDPR, l'utente ha diritto di accedere ai propri dati, richiederne la rettifica o la cancellazione, limitarne il trattamento, opporsi al trattamento e richiedere la portabilità dei dati. L'utente ha inoltre il diritto di proporre reclamo all'Autorità Garante per la Protezione dei Dati Personali (www.garanteprivacy.it).\n\nPer esercitare i propri diritti, l'utente può contattare il titolare all'indirizzo email indicato al punto 1.\n\n9. Modifiche\nIl titolare si riserva di aggiornare la presente informativa. Eventuali modifiche saranno pubblicate su questa pagina con indicazione della data di ultimo aggiornamento.`;
 
@@ -612,6 +640,26 @@ function ProjectContent({ isMobile, t }) {
         </div>
       </div>
     </>
+  );
+}
+
+function ChangelogContent({ isMobile }) {
+  return (
+    <div>
+      <p style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.7, margin: "0 0 16px" }}>
+        Registro sintetico degli aggiornamenti implementati durante questa sessione di lavoro.
+      </p>
+      {CHANGELOG_ENTRIES.map((entry) => (
+        <section key={entry.date} style={{ marginBottom: 20 }}>
+          <h4 style={{ fontSize: isMobile ? 14 : 15, fontWeight: 700, color: C.primary, margin: "0 0 8px" }}>{entry.date}</h4>
+          <ul style={{ margin: 0, paddingLeft: 18, color: C.text }}>
+            {entry.items.map((item, idx) => (
+              <li key={`${entry.date}-${idx}`} style={{ fontSize: 13, lineHeight: 1.7, marginBottom: 6 }}>{item}</li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -1093,6 +1141,7 @@ export default function CAAMapBuilder() {
         <div style={{ display: "flex", gap: 6, flexShrink: 0, alignItems: "center" }}>
           <LangPicker lang={lang} setLang={setLang} isMobile={isMobile} t={t} />
           <HBtn icon={<Info size={15}/>} label={isMobile ? "" : t.project} onClick={() => setModal("project")} ariaLabel={t.project} />
+          <HBtn icon={<FileText size={15}/>} label={isMobile ? "" : t.changelog} onClick={() => setModal("changelog")} ariaLabel={t.changelog} />
           {!isMobile && <HBtn icon={<HelpCircle size={15}/>} label={t.guide} onClick={() => setShowHelp(!showHelp)} ariaLabel={t.guide} />}
           <HBtn icon={<Undo2 size={15}/>} label={isMobile ? "" : t.undo} onClick={doUndo} disabled={undoStack.length === 0} ariaLabel={t.undo} />
           <HBtn icon={<RotateCcw size={15}/>} label={isMobile ? "" : t.reset} onClick={() => { pushUndo(placed); setPlaced([]); setMapImage(null); setError(null); setUndoStack([]); }} ariaLabel={t.reset} />
@@ -1264,6 +1313,7 @@ export default function CAAMapBuilder() {
       {!cookieAccepted && <CookieBanner onAccept={() => setCookieAccepted(true)} isMobile={isMobile} t={t} />}
 
       {modal === "project" && <Modal title={t.project} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><ProjectContent isMobile={isMobile} t={t} /></Modal>}
+      {modal === "changelog" && <Modal title={t.changelog} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><ChangelogContent isMobile={isMobile} /></Modal>}
       {modal === "privacy" && <Modal title={t.privacy + " Policy"} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><PolicyContent text={PRIVACY_POLICY} /></Modal>}
       {modal === "cookie" && <Modal title={t.cookie + " Policy"} onClose={() => setModal(null)} isMobile={isMobile} closeLabel={t.close}><PolicyContent text={COOKIE_POLICY} /></Modal>}
     </div>
