@@ -995,6 +995,7 @@ export default function CAAMapBuilder() {
       <div style={{ flex: 1, overflowY: "auto", padding: "4px 0", WebkitOverflowScrolling: "touch" }} role="list" aria-label={t.libraryTitle}>
         {filtered.map(cat => {
           const catName = t[CAT_KEYS[cat.category]] || cat.category;
+          const directionFocusActive = openDirectionChoices;
           return (
           <div key={cat.category} role="listitem">
             <button onClick={() => setOpenCats(p => ({ ...p, [cat.category]: !p[cat.category] }))} aria-expanded={openCats[cat.category]} aria-label={catName}
@@ -1009,13 +1010,14 @@ export default function CAAMapBuilder() {
                 {cat.symbols.flatMap(sym => {
                   const isDirectionTrigger = sym.id === DIRECTION_TRIGGER_ID;
                   if (!isDirectionTrigger) {
+                    const isMuted = directionFocusActive;
                     return (
                       <button key={sym.id} onClick={() => { setSelected(selected === sym.id ? null : sym.id); setOpenDirectionChoices(false); }} title={sym.name} role="gridcell"
                         aria-pressed={selected === sym.id} aria-label={sym.name}
-                        style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none" }}
+                        style={{ background: selected === sym.id ? C.primaryLight : C.bg, border: `2px solid ${selected === sym.id ? C.primary : "transparent"}`, borderRadius: 8, padding: isMobile ? 8 : 5, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, transition: "all 0.12s", minHeight: isMobile ? 72 : "auto", outline: "none", opacity: isMuted ? 0.72 : 1 }}
                         onFocus={e => { e.target.style.outline = focusOutline; e.target.style.outlineOffset = focusOffset; }} onBlur={e => e.target.style.outline = "none"}>
-                        <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain" }} draggable={false} />
-                        <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: selected === sym.id ? C.primary : C.textMuted, textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
+                        <img src={sym.src} alt={sym.name} style={{ width: isMobile ? 44 : 40, height: isMobile ? 44 : 40, objectFit: "contain", filter: isMuted ? "grayscale(1)" : "none" }} draggable={false} />
+                        <span style={{ fontSize: isMobile ? 10 : 9, fontWeight: 500, color: isMuted ? C.textLight : (selected === sym.id ? C.primary : C.textMuted), textAlign: "center", lineHeight: 1.2, wordBreak: "break-word" }}>{sym.name}</span>
                       </button>
                     );
                   }
